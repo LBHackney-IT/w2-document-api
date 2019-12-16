@@ -3,3 +3,4 @@
 .env
 /.vscode
 npm-debug.log*
+tmp

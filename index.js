@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const mimeTypes = require('mime-types');
 const port = process.env.PORT || 3000;
 
 const gateways = {
@@ -25,8 +24,7 @@ app.get('/documents/:id', async (req, res) => {
 app.get('/documents/:id/download', async (req, res) => {
   try {
     const metadata = await getDocumentMetadata(req.params.id);
-    const mimeType = mimeTypes.lookup(metadata.extension);
-    const doc = await getDocument(metadata.imageId);
+    const { mimeType, doc } = await getDocument(metadata);
     res.set('Content-Type', mimeType);
     res.send(doc);
   } catch (err) {

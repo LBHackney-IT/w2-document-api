@@ -9,7 +9,7 @@ const gateways = {
 };
 const {
   getDocumentMetadata,
-  getDocument,
+  getConvertedDocument,
   getOriginalDocument
 } = require('./lib/use-cases')(gateways);
 
@@ -47,8 +47,8 @@ app.get('/documents/:id/download', async (req, res) => {
 app.get('/documents/:id/view', async (req, res) => {
   try {
     const metadata = await getDocumentMetadata(req.params.id);
-    // const { mimeType, doc } = await getDocument(metadata);
-    // res.set('Content-Type', mimeType);
+    const { mimeType, doc } = await getConvertedDocument(metadata);
+    res.set('Content-Type', mimeType);
     res.send(doc);
   } catch (err) {
     console.log(err);

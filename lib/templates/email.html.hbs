@@ -1,0 +1,23 @@
+<html>
+  <body>
+    <p>
+      {{sender}}
+    </p>
+    <p>
+      {{recipient}}
+    </p>
+    <pre>
+      {{content}}
+    </pre>
+
+    <ul>
+      {{#each attachments}}
+        <li>
+          <a href="/attachments/{{id}}/view">
+            {{name}}
+          </a>
+        </li>
+      {{/each}}
+    </ul>
+  </body>
+</html>

@@ -53,12 +53,16 @@ app.get('/documents/:id/download', async (req, res) => {
 app.get('/documents/:id/view', async (req, res) => {
   try {
     const metadata = await getDocumentMetadata(req.params.id);
-    const { mimeType, doc } = await getConvertedDocument(metadata);
-    res.set('Content-Type', mimeType);
-    res.send(doc);
+    const converted = await getConvertedDocument(metadata);
+    if (converted) {
+      res.set('Content-Type', converted.mimeType);
+      res.send(converted.doc);
+    } else {
+      res.send(downloadTemplate({ id: req.params.id }));
+    }
   } catch (err) {
-    res.status(500);
-    res.send(downloadTemplate({ id: req.params.id }));
+    console.log(err);
+    res.sendStatus(500);
   }
 });
 

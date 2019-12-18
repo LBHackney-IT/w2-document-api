@@ -1,4 +1,5 @@
 require('dotenv').config();
+const path = require('path');
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
@@ -12,6 +13,11 @@ const {
   getConvertedDocument,
   getOriginalDocument
 } = require('./lib/use-cases')(gateways);
+
+const { loadTemplates } = require('./lib/Utils');
+const { downloadTemplate } = loadTemplates(
+  path.join(__dirname, '/lib/templates')
+);
 
 app.get('/attachments/:id/download', async (req, res) => {
   res.sendStatus(200);
@@ -51,8 +57,8 @@ app.get('/documents/:id/view', async (req, res) => {
     res.set('Content-Type', mimeType);
     res.send(doc);
   } catch (err) {
-    console.log(err);
-    res.sendStatus(500);
+    res.status(500);
+    res.send(downloadTemplate({ id: req.params.id }));
   }
 });
 

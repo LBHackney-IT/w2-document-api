@@ -4,13 +4,15 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint --fix --ext js lib && echo 'Lint complete.'",
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "jest"
   },
   "devDependencies": {
     "eslint": "^6.7.2",
     "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-prettier": "^3.1.2",
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "jest": "^24.9.0"
   },
   "dependencies": {
     "@freiraum/msgreader": "github:bjpirt/msgreader",
@@ -23,5 +25,8 @@
     "mime-types": "^2.1.25",
     "mssql": "^6.0.1",
     "request-promise": "^4.2.5"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }

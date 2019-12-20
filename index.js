@@ -4,8 +4,12 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 
+const SqlServerConnection = require('./lib/SqlServerConnection');
+
 const gateways = {
-  dbGateway: require('./lib/gateways/W2Gateway'),
+  dbGateway: require('./lib/gateways/W2Gateway')({
+    dbConnection: new SqlServerConnection()
+  }),
   imageServerGateway: require('./lib/gateways/ImageServerGateway')
 };
 const {

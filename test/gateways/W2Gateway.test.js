@@ -1,4 +1,3 @@
-const mssql = require('mssql');
 const path = require('path');
 const { loadSQL } = require('../../lib/Utils');
 const W2Gateway = require('../../lib/gateways/W2Gateway');
@@ -11,41 +10,95 @@ const {
 } = loadSQL(path.join(__dirname, '/../../lib/sql'));
 
 describe('W2Gateway', function() {
-  beforeEach(() => {});
-
-  it('can get document metadata', async function() {
-    const id = 123;
-
-    const dbConnection = {
+  const id = 123;
+  const dbConn = (isSuccess, returnsArray) => {
+    return {
       request: jest.fn(() => {
-        return [{ id }];
+        if (returnsArray) {
+          return isSuccess ? [{ id }] : [];
+        }
+        if (isSuccess) {
+          return { id };
+        }
       })
     };
+  };
 
+  const expectSuccess = (req, res, sql) => {
+    expect(req).toHaveBeenCalledWith(sql, [
+      { id: 'id', type: 'Int', value: id }
+    ]);
+    expect(res.id).toBe(id);
+  };
+
+  const expectFailure = (req, res, sql) => {
+    expect(req).toHaveBeenCalledWith(sql, [
+      { id: 'id', type: 'Int', value: id }
+    ]);
+    expect(res).toBeUndefined();
+  };
+
+  it('can get document metadata', async function() {
+    const dbConnection = dbConn(true, true);
     const gateway = W2Gateway({ dbConnection });
-    const params = [{ id: 'id', type: 'Int', value: id }];
     const response = await gateway.getDocumentMetadata(id);
 
-    expect(dbConnection.request).toHaveBeenCalledWith(
-      getDocumentMetadataSQL,
-      params
-    );
-    expect(response).not.toBeUndefined();
+    expectSuccess(dbConnection.request, response, getDocumentMetadataSQL);
   });
 
-  // it('returns undefined if error fetching document metadata', async function() {
-  // const input = jest.fn();
-  // const query = jest.fn(() => {
-  //   throw new Error();
-  // });
-  // fakeSqlClient.request = jest.fn(() => {
-  //   return {
-  //     input,
-  //     query
-  //   };
-  // });
-  // const gateway = new UHTGateway();
-  // const response = await gateway.fetchCustomer('invalid');
-  // expect(response).toBeNull();
-  // });
+  it('returns undefined if cant fetch document metadata', async function() {
+    const dbConnection = dbConn(false, true);
+    const gateway = W2Gateway({ dbConnection });
+    const response = await gateway.getDocumentMetadata(id);
+
+    expectFailure(dbConnection.request, response, getDocumentMetadataSQL);
+  });
+
+  it('can get document pages', async function() {
+    const dbConnection = dbConn(true, false);
+    const gateway = W2Gateway({ dbConnection });
+    const response = await gateway.getDocumentPages(id);
+
+    expectSuccess(dbConnection.request, response, getDocumentPagesSQL);
+  });
+
+  it('returns undefined if cant fetch document pages', async function() {
+    const dbConnection = dbConn(false, false);
+    const gateway = W2Gateway({ dbConnection });
+    const response = await gateway.getDocumentPages(id);
+
+    expectFailure(dbConnection.request, response, getDocumentPagesSQL);
+  });
+
+  it('can get email attachments', async function() {
+    const dbConnection = dbConn(true, false);
+    const gateway = W2Gateway({ dbConnection });
+    const response = await gateway.getEmailAttachments(id);
+
+    expectSuccess(dbConnection.request, response, getEmailAttachmentsSQL);
+  });
+
+  it('returns undefined if cant fetch email attachments', async function() {
+    const dbConnection = dbConn(false, false);
+    const gateway = W2Gateway({ dbConnection });
+    const response = await gateway.getEmailAttachments(id);
+
+    expectFailure(dbConnection.request, response, getEmailAttachmentsSQL);
+  });
+
+  it('can get email metadata', async function() {
+    const dbConnection = dbConn(true, true);
+    const gateway = W2Gateway({ dbConnection });
+    const response = await gateway.getEmailMetadata(id);
+
+    expectSuccess(dbConnection.request, response, getEmailMetadataSQL);
+  });
+
+  it('returns undefined if cant fetch email metadata', async function() {
+    const dbConnection = dbConn(false, true);
+    const gateway = W2Gateway({ dbConnection });
+    const response = await gateway.getEmailMetadata(id);
+
+    expectFailure(dbConnection.request, response, getEmailMetadataSQL);
+  });
 });

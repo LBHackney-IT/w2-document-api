@@ -10,7 +10,9 @@ const gateways = {
   dbGateway: require('./lib/gateways/W2Gateway')({
     dbConnection: new SqlServerConnection()
   }),
-  imageServerGateway: require('./lib/gateways/ImageServerGateway')
+  imageServerGateway: require('./lib/gateways/ImageServerGateway')({
+    imageServerUrl: process.env.W2_IMAGE_SERVER_URL
+  })
 };
 const {
   getDocumentMetadata,

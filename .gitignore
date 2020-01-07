@@ -2,5 +2,6 @@
 .DS_Store
 .env
 /.vscode
+/coverage
 npm-debug.log*
 tmp

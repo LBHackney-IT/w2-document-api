@@ -1,7 +1,7 @@
-jest.mock('request');
+jest.mock('request-promise');
 const imageServerUrl = 'http://dummy-url.com/?';
 const request = require('request-promise');
-const gateway = require('../../lib/gateways/ImageServerGateway')({
+const gateway = require('../../../lib/gateways/ImageServerGateway')({
   imageServerUrl
 });
 
@@ -10,7 +10,9 @@ describe('ImageServerGateway', function() {
     const id = 123;
     const dummyContent = 'DUMMY CONTENT';
     request.get.mockReturnValue(Promise.resolve(dummyContent));
+
     const response = await gateway.getDocument(id);
+
     expect(request.get).toHaveBeenCalledTimes(1);
     expect(request.get).toHaveBeenCalledWith({
       url: `${imageServerUrl}${id}`,

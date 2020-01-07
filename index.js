@@ -6,10 +6,19 @@ const port = process.env.PORT || 3000;
 
 const SqlServerConnection = require('./lib/SqlServerConnection');
 
-const gateways = {
+const { loadTemplates } = require('./lib/Utils');
+const { downloadTemplate, emailTemplate } = loadTemplates(
+  path.join(__dirname, './lib/templates')
+);
+
+const useCaseOptions = {
   dbGateway: require('./lib/gateways/W2Gateway')({
-    dbConnection: new SqlServerConnection()
+    dbConnection: new SqlServerConnection({
+      dbUrl: process.env.W2_DB_URL
+    })
   }),
+  downloadTemplate,
+  emailTemplate,
   imageServerGateway: require('./lib/gateways/ImageServerGateway')({
     imageServerUrl: process.env.W2_IMAGE_SERVER_URL
   })
@@ -18,12 +27,7 @@ const {
   getDocumentMetadata,
   getConvertedDocument,
   getOriginalDocument
-} = require('./lib/use-cases')(gateways);
-
-const { loadTemplates } = require('./lib/Utils');
-const { downloadTemplate } = loadTemplates(
-  path.join(__dirname, '/lib/templates')
-);
+} = require('./lib/use-cases')(useCaseOptions);
 
 app.get('/attachments/:id/download', async (req, res) => {
   res.sendStatus(200);

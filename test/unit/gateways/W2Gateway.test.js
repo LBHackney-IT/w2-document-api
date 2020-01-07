@@ -1,13 +1,13 @@
 const path = require('path');
-const { loadSQL } = require('../../lib/Utils');
-const W2Gateway = require('../../lib/gateways/W2Gateway');
+const { loadSQL } = require('../../../lib/Utils');
+const W2Gateway = require('../../../lib/gateways/W2Gateway');
 
 const {
   getDocumentMetadataSQL,
   getDocumentPagesSQL,
   getEmailAttachmentsSQL,
   getEmailMetadataSQL
-} = loadSQL(path.join(__dirname, '/../../lib/sql'));
+} = loadSQL(path.join(__dirname, '/../../../lib/sql'));
 
 describe('W2Gateway', function() {
   const id = 123;

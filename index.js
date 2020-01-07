@@ -1,5 +1,4 @@
 require('dotenv').config();
-const path = require('path');
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
@@ -7,9 +6,7 @@ const port = process.env.PORT || 3000;
 const SqlServerConnection = require('./lib/SqlServerConnection');
 
 const { loadTemplates } = require('./lib/Utils');
-const { downloadTemplate, emailTemplate } = loadTemplates(
-  path.join(__dirname, './lib/templates')
-);
+const { downloadTemplate, emailTemplate } = loadTemplates('lib/templates');
 
 const useCaseOptions = {
   dbGateway: require('./lib/gateways/W2Gateway')({

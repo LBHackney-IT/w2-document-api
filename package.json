@@ -5,7 +5,8 @@
   "scripts": {
     "lint": "eslint --fix --ext js lib && echo 'Lint complete.'",
     "start": "node index.js",
-    "test": "jest"
+    "test": "jest",
+    "test-coverage": "jest --coverage"
   },
   "devDependencies": {
     "eslint": "^6.7.2",

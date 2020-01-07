@@ -24,6 +24,7 @@
     "images-to-pdf": "^1.0.3",
     "mime-types": "^2.1.25",
     "mssql": "^6.0.1",
+    "pdf2json": "^1.1.8",
     "request-promise": "^4.2.5"
   },
   "jest": {

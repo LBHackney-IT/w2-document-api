@@ -21,7 +21,8 @@ const useCaseOptions = {
   emailTemplate,
   imageServerGateway: require('./lib/gateways/ImageServerGateway')({
     imageServerUrl: process.env.W2_IMAGE_SERVER_URL
-  })
+  }),
+  tempPath: '/tmp'
 };
 const {
   getDocumentMetadata,

@@ -8,19 +8,31 @@ const SqlServerConnection = require('./lib/SqlServerConnection');
 const { loadTemplates } = require('./lib/Utils');
 const { downloadTemplate, emailTemplate } = loadTemplates('lib/templates');
 
+const imageServerGateway = require('./lib/gateways/ImageServerGateway')({
+  imageServerUrl: process.env.W2_IMAGE_SERVER_URL
+});
+
+const tempPath = '/tmp';
+
+const documentHandlers = require('../documentHandlers')({
+  emailTemplate,
+  imageServerGateway,
+  tempPath
+});
+
 const useCaseOptions = {
+  cacheGateway: require('./lib/gateways/FSCacheGateway')({}),
   dbGateway: require('./lib/gateways/W2Gateway')({
     dbConnection: new SqlServerConnection({
       dbUrl: process.env.W2_DB_URL
     })
   }),
-  downloadTemplate,
-  emailTemplate,
+  documentHandlers,
   imageServerGateway: require('./lib/gateways/ImageServerGateway')({
     imageServerUrl: process.env.W2_IMAGE_SERVER_URL
-  }),
-  tempPath: '/tmp'
+  })
 };
+
 const {
   getDocumentMetadata,
   getConvertedDocument,

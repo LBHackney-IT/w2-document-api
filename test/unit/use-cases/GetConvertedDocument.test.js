@@ -9,20 +9,20 @@ const dummyCacheGateway = getValue => {
   };
 };
 
-const dummyDocumentHandlers = (extension, returnValue) => {
+const dummyDocumentHandlers = (type, returnValue) => {
   return {
-    [extension]: jest.fn(() => {
+    [type]: jest.fn(() => {
       return returnValue;
     })
   };
 };
 
 describe('GetConvertedDocument', function() {
-  const docExtension = 'mt';
+  const docType = 'External';
   const dummyDoc = { doc: 'doc', mimeType: 'application/mt' };
-  const metadata = { id: 1, type: docExtension };
+  const metadata = { id: 1, type: docType };
 
-  it('selects the converter based on the doc extension', async function() {
+  it('selects the handler based on the doc type', async function() {
     const cacheGateway = dummyCacheGateway(null);
     const documentHandlers = dummyDocumentHandlers('foo', dummyDoc);
     const usecase = GetConvertedDocument({ cacheGateway, documentHandlers });
@@ -34,25 +34,25 @@ describe('GetConvertedDocument', function() {
 
   it('gets document from cache if it exists', async function() {
     const cacheGateway = dummyCacheGateway(dummyDoc);
-    const documentHandlers = dummyDocumentHandlers(docExtension);
+    const documentHandlers = dummyDocumentHandlers(docType);
     const usecase = GetConvertedDocument({ cacheGateway, documentHandlers });
 
     const cachedDocument = await usecase(metadata);
 
     expect(cacheGateway.get).toHaveBeenCalledWith(metadata.id);
-    expect(documentHandlers[docExtension]).not.toHaveBeenCalled();
+    expect(documentHandlers[docType]).not.toHaveBeenCalled();
     expect(cachedDocument).toBe(dummyDoc);
   });
 
   it('puts document in cache if it doesnt exist', async function() {
     const cacheGateway = dummyCacheGateway(null);
-    const documentHandlers = dummyDocumentHandlers(docExtension, dummyDoc);
+    const documentHandlers = dummyDocumentHandlers(docType, dummyDoc);
     const usecase = GetConvertedDocument({ cacheGateway, documentHandlers });
 
     const returnedDocument = await usecase(metadata);
 
     expect(cacheGateway.get).toHaveBeenCalledWith(metadata.id);
-    expect(documentHandlers[docExtension]).toHaveBeenCalled();
+    expect(documentHandlers[docType]).toHaveBeenCalled();
     expect(cacheGateway.put).toHaveBeenCalledWith(metadata.id, dummyDoc);
     expect(returnedDocument).toBe(dummyDoc);
   });

@@ -14,7 +14,7 @@ const imageServerGateway = require('./lib/gateways/ImageServerGateway')({
 
 const tempPath = '/tmp';
 
-const documentHandlers = require('../documentHandlers')({
+const documentHandlers = require('./lib/documentHandlers')({
   emailTemplate,
   imageServerGateway,
   tempPath

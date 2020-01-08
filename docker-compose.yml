@@ -1,0 +1,9 @@
+version: '3'
+services:
+  builder:
+    image: node:12
+    volumes:
+      - .:/app
+      - ~/.aws/:/root/.aws:ro
+    working_dir: /app
+    command: bash -c 'rm -r node_modules && npm install --only=prod && npm install -g serverless && sls --aws-profile hackney deploy'

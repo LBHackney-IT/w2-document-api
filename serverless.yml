@@ -1,0 +1,37 @@
+# add rest api resource
+# add env variables when done
+# add authorizer
+
+service: w2-document-api
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: eu-west-2
+  stage: production
+  profile: hackney
+  timeout: 15
+  apiGateway:
+    restApiId: g6bw0g0ojk
+    restApiRootResourceId: viicz9 # i created this manually as a resource on the existing api gateway
+  vpc:
+    securityGroupIds:
+      - sg-022acccbebd7bca46
+    subnetIds:
+      - subnet-00356e0650138f74f
+      - subnet-0a7f442c22a6feedc
+
+package:
+  exclude:
+    - '**'
+  include:
+    - index.js
+    - lib/**
+    - node_modules/**
+
+functions:
+  app:
+    role: arn:aws:iam::775052747630:role/LBH_Lambda_Execution
+    handler: index.handler
+    events:
+      - http: 'ANY {proxy+}'

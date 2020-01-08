@@ -40,6 +40,12 @@ const {
   getOriginalDocument
 } = require('./lib/use-cases')(useCaseOptions);
 
+app.use(function(req, res, next) {
+  // had to rewrite the path to get it playing nice with a not-root resource in api gateway
+  req.url = req.url.replace('/uhw-documents', '');
+  next();
+});
+
 app.get('/attachments/:id/download', async (req, res) => {
   res.sendStatus(200);
 });

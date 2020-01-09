@@ -5,5 +5,7 @@ services:
     volumes:
       - .:/app
       - ~/.aws/:/root/.aws:ro
+    tmpfs:
+      - /build
     working_dir: /app
-    command: bash -c 'rm -r node_modules && npm install --only=prod && npm install -g serverless && sls --aws-profile hackney deploy'
+    command: bash -c 'cp -ar /app/* /build && cd /build && rm -r node_modules && npm install --only=prod && npm install -g serverless && sls --aws-profile hackney deploy'

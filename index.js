@@ -95,4 +95,6 @@ app.get('/documents/:id/view', async (req, res) => {
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
 
-module.exports.handler = serverless(app);
+module.exports.handler = serverless(app, {
+  binary: ['*/*']
+});

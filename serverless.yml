@@ -1,4 +1,3 @@
-# add rest api resource
 # add env variables when done
 # add authorizer
 
@@ -12,8 +11,8 @@ provider:
   profile: hackney
   timeout: 15
   apiGateway:
-    restApiId: g6bw0g0ojk
-    restApiRootResourceId: viicz9 # i created this manually as a resource on the existing api gateway
+    binaryMediaTypes:
+      - '*/*'
   vpc:
     securityGroupIds:
       - sg-022acccbebd7bca46

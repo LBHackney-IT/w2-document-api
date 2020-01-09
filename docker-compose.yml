@@ -8,4 +8,4 @@ services:
     tmpfs:
       - /build
     working_dir: /app
-    command: bash -c 'cp -ar /app/* /build && cd /build && rm -r node_modules && npm install --only=prod && npm install -g serverless && sls --aws-profile hackney deploy'
+    command: bash -c 'shopt -s extglob && cp -ar /app/!(node_modules) /build && cd /build && npm install --only=prod && npm install -g serverless && sls --aws-profile hackney deploy'

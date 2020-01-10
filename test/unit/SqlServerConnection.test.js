@@ -3,9 +3,8 @@ jest.mock('mssql');
 const sql = require('mssql');
 
 describe('SqlServerConnection', function() {
-  it('configures the connection pool and connects', async function() {
+  it('configures the connection pool', async function() {
     const mockPool = {
-      connect: jest.fn(),
       on: jest.fn()
     };
     sql.ConnectionPool = jest.fn(() => mockPool);
@@ -22,6 +21,5 @@ describe('SqlServerConnection', function() {
       database: 'db',
       requestTimeout: 60000
     });
-    expect(mockPool.connect).toHaveBeenCalledTimes(1);
   });
 });

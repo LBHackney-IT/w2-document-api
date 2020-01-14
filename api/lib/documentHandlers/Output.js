@@ -1,4 +1,4 @@
-const fileConverter = require('../fileConverter');
+const fileConverter = require('@lib/fileConverter');
 
 module.exports = function(options) {
   const imageServerGateway = options.imageServerGateway;

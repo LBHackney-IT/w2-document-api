@@ -1,35 +1,36 @@
+require('module-alias/register');
 require('dotenv').config();
 const serverless = require('serverless-http');
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 
-const SqlServerConnection = require('./api/lib/SqlServerConnection');
+const SqlServerConnection = require('@lib/SqlServerConnection');
 
-const { loadTemplates } = require('./api/lib/Utils');
+const { loadTemplates } = require('@lib/Utils');
 const { downloadTemplate, emailTemplate } = loadTemplates('api/lib/templates');
 
-const imageServerGateway = require('./api/lib/gateways/ImageServerGateway')({
+const imageServerGateway = require('@lib/gateways/ImageServerGateway')({
   imageServerUrl: process.env.W2_IMAGE_SERVER_URL
 });
 
 const tempPath = '/tmp';
 
-const documentHandlers = require('./api/lib/documentHandlers')({
+const documentHandlers = require('@lib/documentHandlers')({
   emailTemplate,
   imageServerGateway,
   tempPath
 });
 
 const useCaseOptions = {
-  cacheGateway: require('./api/lib/gateways/FSCacheGateway')({}),
-  dbGateway: require('./api/lib/gateways/W2Gateway')({
+  cacheGateway: require('@lib/gateways/FSCacheGateway')({}),
+  dbGateway: require('@lib/gateways/W2Gateway')({
     dbConnection: new SqlServerConnection({
       dbUrl: process.env.W2_DB_URL
     })
   }),
   documentHandlers,
-  imageServerGateway: require('./api/lib/gateways/ImageServerGateway')({
+  imageServerGateway: require('@lib/gateways/ImageServerGateway')({
     imageServerUrl: process.env.W2_IMAGE_SERVER_URL
   })
 };
@@ -38,7 +39,7 @@ const {
   getDocumentMetadata,
   getConvertedDocument,
   getOriginalDocument
-} = require('./api/lib/use-cases')(useCaseOptions);
+} = require('@lib/use-cases')(useCaseOptions);
 
 app.get('/attachments/:id/download', async (req, res) => {
   res.sendStatus(200);

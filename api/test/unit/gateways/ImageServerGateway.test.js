@@ -1,7 +1,7 @@
 jest.mock('request-promise');
 const imageServerUrl = 'http://dummy-url.com/?';
 const request = require('request-promise');
-const gateway = require('../../../lib/gateways/ImageServerGateway')({
+const gateway = require('@lib/gateways/ImageServerGateway')({
   imageServerUrl
 });
 

@@ -1,12 +1,12 @@
 const path = require('path');
-const { loadSQL } = require('../Utils');
+const { loadSQL } = require('@lib/Utils');
 
 const {
   getDocumentMetadataSQL,
   getDocumentPagesSQL,
   getEmailAttachmentsSQL,
   getEmailMetadataSQL
-} = loadSQL(path.join(__dirname, '/../sql'));
+} = loadSQL(path.join(__dirname, '../sql'));
 
 module.exports = function({ dbConnection }) {
   return {

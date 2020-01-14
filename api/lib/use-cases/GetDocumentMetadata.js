@@ -1,4 +1,4 @@
-const { W2DocType } = require('../Constants');
+const { W2DocType } = require('@lib/Constants');
 
 module.exports = function(options) {
   const dbGateway = options.dbGateway;

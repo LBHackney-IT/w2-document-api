@@ -1,6 +1,6 @@
 const path = require('path');
-const { loadSQL } = require('../../../lib/Utils');
-const W2Gateway = require('../../../lib/gateways/W2Gateway');
+const { loadSQL } = require('@lib/Utils');
+const W2Gateway = require('@lib/gateways/W2Gateway');
 
 const {
   getDocumentMetadataSQL,

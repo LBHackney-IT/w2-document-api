@@ -1,8 +1,8 @@
 const fs = require('fs');
 const PDFParser = require('pdf2json');
 
-const imageServerGateway = require('../../../lib/gateways/FSImageServerGateway')();
-const Scanned = require('../../../lib/documentHandlers/Scanned');
+const imageServerGateway = require('@lib/gateways/FSImageServerGateway')();
+const Scanned = require('@lib/documentHandlers/Scanned');
 
 describe('ScannedDocumentHandler', function() {
   let handler;

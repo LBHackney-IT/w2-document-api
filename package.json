@@ -24,6 +24,7 @@
     "handlebars": "^4.6.0",
     "image-type": "^4.1.0",
     "mime-types": "^2.1.26",
+    "module-alias": "^2.2.2",
     "mssql": "^6.0.1",
     "pdfkit": "^0.11.0",
     "request-promise": "^4.2.5",
@@ -31,6 +32,12 @@
     "serverless-http": "^2.3.0"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^@lib/(.*)$": "<rootDir>/api/lib/$1"
+    }
+  },
+  "_moduleAliases": {
+    "@lib": "api/lib"
   }
 }

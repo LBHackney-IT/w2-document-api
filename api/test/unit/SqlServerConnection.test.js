@@ -1,4 +1,4 @@
-const SqlServerConnection = require('../../lib/SqlServerConnection');
+const SqlServerConnection = require('@lib/SqlServerConnection');
 jest.mock('mssql');
 const sql = require('mssql');
 

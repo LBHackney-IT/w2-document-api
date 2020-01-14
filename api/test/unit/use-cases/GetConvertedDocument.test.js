@@ -1,4 +1,4 @@
-const GetConvertedDocument = require('../../../lib/use-cases/GetConvertedDocument');
+const GetConvertedDocument = require('@lib/use-cases/GetConvertedDocument');
 
 const dummyCacheGateway = getValue => {
   return {

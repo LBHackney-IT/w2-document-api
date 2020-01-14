@@ -1,4 +1,4 @@
-const GetDocumentMetadata = require('../../../lib/use-cases/GetDocumentMetadata');
+const GetDocumentMetadata = require('@lib/use-cases/GetDocumentMetadata');
 
 describe('GetDocumentMetadata', function() {
   const createDbGateway = docType => {

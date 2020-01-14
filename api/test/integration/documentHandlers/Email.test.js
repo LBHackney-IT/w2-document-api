@@ -1,6 +1,6 @@
-const imageServerGateway = require('../../../lib/gateways/FSImageServerGateway')();
-const Email = require('../../../lib/documentHandlers/Email');
-const { loadTemplates } = require('../../../lib/Utils');
+const imageServerGateway = require('@lib/gateways/FSImageServerGateway')();
+const Email = require('@lib/documentHandlers/Email');
+const { loadTemplates } = require('@lib/Utils');
 const { emailTemplate } = loadTemplates('api/lib/templates');
 
 describe('EmailDocumentHandler', function() {

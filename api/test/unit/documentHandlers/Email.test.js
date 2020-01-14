@@ -1,5 +1,5 @@
-const Email = require('../../../lib/documentHandlers/Email');
-const { MimeType } = require('../../../lib/Constants');
+const Email = require('@lib/documentHandlers/Email');
+const { MimeType } = require('@lib/Constants');
 
 describe('EmailHandler', function() {
   it('can process an email document', async function() {

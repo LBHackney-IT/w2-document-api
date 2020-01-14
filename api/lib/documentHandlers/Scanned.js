@@ -1,7 +1,7 @@
 const fs = require('fs');
 const imageType = require('image-type');
-const imagesToPDF = require('../imagesToPdf');
-const { MimeType } = require('../Constants');
+const imagesToPDF = require('@lib/imagesToPdf');
+const { MimeType } = require('@lib/Constants');
 
 module.exports = function(options) {
   const imageServerGateway = options.imageServerGateway;

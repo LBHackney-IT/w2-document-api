@@ -1,5 +1,5 @@
-const Xml = require('../../../lib/documentHandlers/XML');
-const { MimeType } = require('../../../lib/Constants');
+const Xml = require('@lib/documentHandlers/XML');
+const { MimeType } = require('@lib/Constants');
 
 describe('XmlHandler', function() {
   it('can process an xml document', async function() {

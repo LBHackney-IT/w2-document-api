@@ -1,7 +1,7 @@
 const fs = require('fs');
 
-const imageServerGateway = require('../../../lib/gateways/FSImageServerGateway')();
-const External = require('../../../lib/documentHandlers/External');
+const imageServerGateway = require('@lib/gateways/FSImageServerGateway')();
+const External = require('@lib/documentHandlers/External');
 
 describe('ExternalDocumentHandler', function() {
   it('returns the original document from the image server', async function() {

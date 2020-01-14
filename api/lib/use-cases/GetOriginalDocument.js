@@ -1,5 +1,5 @@
 const mimeTypes = require('mime-types');
-const { MimeType, W2DocType, W2DocExtensionLookup } = require('../Constants');
+const { MimeType, W2DocType, W2DocExtensionLookup } = require('@lib/Constants');
 
 module.exports = function(options) {
   const imageServerGateway = options.imageServerGateway;

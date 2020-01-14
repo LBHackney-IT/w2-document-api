@@ -1,4 +1,4 @@
-const { MimeType } = require('../Constants');
+const { MimeType } = require('@lib/Constants');
 
 module.exports = function(options) {
   const imageServerGateway = options.imageServerGateway;

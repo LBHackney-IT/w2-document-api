@@ -1,4 +1,4 @@
-const Xml = require('@lib/documentHandlers/XML');
+const Xml = require('@lib/documentHandlers/Xml');
 const { MimeType } = require('@lib/Constants');
 
 describe('XmlHandler', function() {

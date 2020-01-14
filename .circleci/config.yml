@@ -20,21 +20,20 @@ jobs:
             sudo npm i -g serverless
             npm install
 
-      #- run:
-          #name: Set AWS credentials
-          #command: |
-          #  serverless config credentials --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY} --profile hackney
+      - run:
+          name: Set AWS credentials
+          command: |
+            serverless config credentials --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY} --profile hackney
 
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-
 
-      # run tests!
       - run:
           name: Run tests with coverage
           command: npm run test-coverage
 
-      #- run:
-          #name: Deploy application
-          #command: sls deploy
+      - run:
+          name: Deploy application
+          command: sls deploy

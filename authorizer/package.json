@@ -1,0 +1,16 @@
+{
+  "name": "authorizer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "serverless": "^1.58.0"
+  },
+  "scripts": {
+    "invoke": "serverless invoke local --function app --path event.json"
+  }
+}

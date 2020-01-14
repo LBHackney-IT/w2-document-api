@@ -9,8 +9,8 @@
     "test-coverage": "jest --coverage"
   },
   "devDependencies": {
-    "eslint": "^6.7.2",
-    "eslint-config-prettier": "^6.5.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-prettier": "^3.1.2",
     "jest": "^24.9.0",
     "pdf2json": "^1.1.8",
@@ -21,9 +21,9 @@
     "@iarna/rtf-to-html": "^1.1.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "handlebars": "^4.5.3",
+    "handlebars": "^4.6.0",
     "image-type": "^4.1.0",
-    "mime-types": "^2.1.25",
+    "mime-types": "^2.1.26",
     "mssql": "^6.0.1",
     "pdfkit": "^0.11.0",
     "request-promise": "^4.2.5",

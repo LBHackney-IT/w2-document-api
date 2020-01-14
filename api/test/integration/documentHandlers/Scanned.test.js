@@ -7,7 +7,7 @@ const Scanned = require('../../../lib/documentHandlers/Scanned');
 describe('ScannedDocumentHandler', function() {
   let handler;
   let metadata;
-  const tempPath = 'test/test-data/tmp';
+  const tempPath = 'api/test/test-data/tmp';
 
   beforeEach(async () => {
     handler = Scanned({ imageServerGateway, tempPath });

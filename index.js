@@ -4,32 +4,32 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 
-const SqlServerConnection = require('./lib/SqlServerConnection');
+const SqlServerConnection = require('./api/lib/SqlServerConnection');
 
-const { loadTemplates } = require('./lib/Utils');
-const { downloadTemplate, emailTemplate } = loadTemplates('lib/templates');
+const { loadTemplates } = require('./api/lib/Utils');
+const { downloadTemplate, emailTemplate } = loadTemplates('api/lib/templates');
 
-const imageServerGateway = require('./lib/gateways/ImageServerGateway')({
+const imageServerGateway = require('./api/lib/gateways/ImageServerGateway')({
   imageServerUrl: process.env.W2_IMAGE_SERVER_URL
 });
 
 const tempPath = '/tmp';
 
-const documentHandlers = require('./lib/documentHandlers')({
+const documentHandlers = require('./api/lib/documentHandlers')({
   emailTemplate,
   imageServerGateway,
   tempPath
 });
 
 const useCaseOptions = {
-  cacheGateway: require('./lib/gateways/FSCacheGateway')({}),
-  dbGateway: require('./lib/gateways/W2Gateway')({
+  cacheGateway: require('./api/lib/gateways/FSCacheGateway')({}),
+  dbGateway: require('./api/lib/gateways/W2Gateway')({
     dbConnection: new SqlServerConnection({
       dbUrl: process.env.W2_DB_URL
     })
   }),
   documentHandlers,
-  imageServerGateway: require('./lib/gateways/ImageServerGateway')({
+  imageServerGateway: require('./api/lib/gateways/ImageServerGateway')({
     imageServerUrl: process.env.W2_IMAGE_SERVER_URL
   })
 };
@@ -38,13 +38,7 @@ const {
   getDocumentMetadata,
   getConvertedDocument,
   getOriginalDocument
-} = require('./lib/use-cases')(useCaseOptions);
-
-app.use(function(req, res, next) {
-  // had to rewrite the path to get it playing nice with a not-root resource in api gateway
-  req.url = req.url.replace('/uhw-documents', '');
-  next();
-});
+} = require('./api/lib/use-cases')(useCaseOptions);
 
 app.get('/attachments/:id/download', async (req, res) => {
   res.sendStatus(200);

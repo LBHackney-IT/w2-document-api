@@ -1,8 +1,9 @@
-/node_modules
+*node_modules
 .DS_Store
-.env
-/.serverless
+*.env
+*.serverless
 /.vscode
-/coverage
-npm-debug.log*
-tmp
+*coverage
+*npm-debug.log*
+*tmp
+/authorizer/event.json

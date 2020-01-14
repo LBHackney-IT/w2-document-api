@@ -7,7 +7,7 @@ const {
   getDocumentPagesSQL,
   getEmailAttachmentsSQL,
   getEmailMetadataSQL
-} = loadSQL(path.join(__dirname, '/../../../lib/sql'));
+} = loadSQL(path.join(__dirname, '../../../lib/sql'));
 
 describe('W2Gateway', function() {
   const id = 123;

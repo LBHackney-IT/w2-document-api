@@ -1,11 +1,13 @@
 const GetConvertedDocument = require('@lib/use-cases/GetConvertedDocument');
 
-const dummyCacheGateway = getValue => {
+const createTestItems = (id, docType) => {
   return {
-    get: jest.fn(() => {
-      return getValue;
-    }),
-    put: jest.fn()
+    doc: {
+      id,
+      doc: 'doc',
+      mimeType: 'application/mt'
+    },
+    metadata: { id, type: docType }
   };
 };
 
@@ -18,42 +20,50 @@ const dummyDocumentHandlers = (type, returnValue) => {
 };
 
 describe('GetConvertedDocument', function() {
-  const docType = 'External';
-  const dummyDoc = { doc: 'doc', mimeType: 'application/mt' };
-  const metadata = { id: 1, type: docType };
+  const id = 1;
+  const docType = 'foo';
+  const { doc, metadata } = createTestItems(id, docType);
+
+  let documentHandlers;
+  let cacheGateway;
+  let cacheGetSpy;
+  let cachePutSpy;
+
+  beforeEach(() => {
+    jest.resetModules();
+    cacheGateway = require('@lib/gateways/InMemoryCacheGateway')();
+    cacheGetSpy = jest.spyOn(cacheGateway, 'get');
+    cachePutSpy = jest.spyOn(cacheGateway, 'put');
+    documentHandlers = dummyDocumentHandlers(docType, doc);
+  });
 
   it('selects the handler based on the doc type', async function() {
-    const cacheGateway = dummyCacheGateway(null);
-    const documentHandlers = dummyDocumentHandlers('foo', dummyDoc);
     const usecase = GetConvertedDocument({ cacheGateway, documentHandlers });
 
-    await usecase({ id: 1, type: 'foo' });
+    await usecase(metadata);
 
     expect(documentHandlers.foo).toHaveBeenCalled();
   });
 
   it('gets document from cache if it exists', async function() {
-    const cacheGateway = dummyCacheGateway(dummyDoc);
-    const documentHandlers = dummyDocumentHandlers(docType);
+    await cacheGateway.put(id, doc);
     const usecase = GetConvertedDocument({ cacheGateway, documentHandlers });
 
     const cachedDocument = await usecase(metadata);
 
-    expect(cacheGateway.get).toHaveBeenCalledWith(metadata.id);
+    expect(cacheGetSpy).toHaveBeenCalledWith(metadata.id);
     expect(documentHandlers[docType]).not.toHaveBeenCalled();
-    expect(cachedDocument).toBe(dummyDoc);
+    expect(JSON.stringify(cachedDocument)).toBe(JSON.stringify(doc));
   });
 
   it('puts document in cache if it doesnt exist', async function() {
-    const cacheGateway = dummyCacheGateway(null);
-    const documentHandlers = dummyDocumentHandlers(docType, dummyDoc);
     const usecase = GetConvertedDocument({ cacheGateway, documentHandlers });
 
     const returnedDocument = await usecase(metadata);
 
-    expect(cacheGateway.get).toHaveBeenCalledWith(metadata.id);
+    expect(cacheGetSpy).toHaveBeenCalledWith(metadata.id);
     expect(documentHandlers[docType]).toHaveBeenCalled();
-    expect(cacheGateway.put).toHaveBeenCalledWith(metadata.id, dummyDoc);
-    expect(returnedDocument).toBe(dummyDoc);
+    expect(cachePutSpy).toHaveBeenCalledWith(metadata.id, doc);
+    expect(JSON.stringify(returnedDocument)).toBe(JSON.stringify(doc));
   });
 });

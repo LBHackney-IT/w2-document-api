@@ -23,7 +23,7 @@ const documentHandlers = require('@lib/documentHandlers')({
 });
 
 const useCaseOptions = {
-  cacheGateway: require('@lib/gateways/FSCacheGateway')({}),
+  cacheGateway: require('@lib/gateways/InMemoryCacheGateway')(),
   dbGateway: require('@lib/gateways/W2Gateway')({
     dbConnection: new SqlServerConnection({
       dbUrl: process.env.W2_DB_URL

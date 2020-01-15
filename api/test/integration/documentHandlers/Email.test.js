@@ -1,7 +1,7 @@
 const imageServerGateway = require('@lib/gateways/FSImageServerGateway')();
 const Email = require('@lib/documentHandlers/Email');
 const { loadTemplates } = require('@lib/Utils');
-const { emailTemplate } = loadTemplates('api/lib/templates');
+const { emailTemplate } = loadTemplates('lib/templates');
 
 describe('EmailDocumentHandler', function() {
   it('renders the email text into the template', async function() {

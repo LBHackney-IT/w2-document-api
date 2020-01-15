@@ -21,14 +21,14 @@ functions:
   w2-document-api:
     name: w2-document-api-${self:provider.stage}
     role: arn:aws:iam::775052747630:role/LBH_Lambda_Execution
-    handler: index.handler
+    handler: api/index.handler
     package:
       exclude:
         - '**'
       include:
-        - index.js
+        - api/index.js
         - api/lib/**
-        - node_modules/**
+        - api/node_modules/**
     events:
       - http:
           path: '{proxy+}'

@@ -2,13 +2,17 @@ require('module-alias/register');
 require('dotenv').config();
 const serverless = require('serverless-http');
 const express = require('express');
+const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 
 const SqlServerConnection = require('@lib/SqlServerConnection');
 
 const { loadTemplates } = require('@lib/Utils');
-const { downloadTemplate, emailTemplate } = loadTemplates('api/lib/templates');
+
+const { downloadTemplate, emailTemplate } = loadTemplates(
+  path.join(__dirname, 'lib/templates')
+);
 
 const imageServerGateway = require('@lib/gateways/ImageServerGateway')({
   imageServerUrl: process.env.W2_IMAGE_SERVER_URL

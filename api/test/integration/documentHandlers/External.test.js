@@ -9,7 +9,7 @@ describe('ExternalDocumentHandler', function() {
     const handler = External({ imageServerGateway });
 
     const originalFile = await fs.promises.readFile(
-      `api/test/test-data/images/${imageId}`
+      `test/test-data/images/${imageId}`
     );
 
     const metadata = { imageId, extension: 'jpg' };

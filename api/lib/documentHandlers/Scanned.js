@@ -1,28 +1,20 @@
-const fs = require('fs');
-const imageType = require('image-type');
 const imagesToPDF = require('@lib/imagesToPdf');
 const { MimeType } = require('@lib/Constants');
 
 module.exports = function(options) {
   const imageServerGateway = options.imageServerGateway;
-  const tempPath = options.tempPath;
 
   return async function(metadata) {
-    // Create temp directory
-    const tempDir = `${tempPath}/${metadata.id}`;
-    await fs.promises.mkdir(tempDir, { recursive: true });
     // Download each of the pages
-    const paths = [];
+    const docs = [];
     for (const page of metadata.pages) {
-      const doc = await imageServerGateway.getDocument(page.imageId);
-      const type = imageType(doc);
-      const path = `${tempDir}/${page.page}.${type.ext}`;
-      await fs.promises.writeFile(path, doc);
-      paths.push(path);
+      const docFetcher = async () => {
+        return await imageServerGateway.getDocument(page.imageId);
+      };
+      docs.push(docFetcher);
     }
     // Turn into pdf
-    const outputDoc = await imagesToPDF(paths);
-    await fs.promises.rmdir(tempDir, { recursive: true });
+    const outputDoc = await imagesToPDF(docs);
     return { mimeType: MimeType.Pdf, doc: outputDoc };
   };
 };

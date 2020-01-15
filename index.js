@@ -14,12 +14,9 @@ const imageServerGateway = require('@lib/gateways/ImageServerGateway')({
   imageServerUrl: process.env.W2_IMAGE_SERVER_URL
 });
 
-const tempPath = '/tmp';
-
 const documentHandlers = require('@lib/documentHandlers')({
   emailTemplate,
-  imageServerGateway,
-  tempPath
+  imageServerGateway
 });
 
 const useCaseOptions = {

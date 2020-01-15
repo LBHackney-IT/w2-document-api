@@ -1,4 +1,4 @@
-version: '3'
+version: '3.6'
 services:
   builder:
     image: node:12
@@ -8,4 +8,4 @@ services:
     tmpfs:
       - /build
     working_dir: /app
-    command: bash -O extglob -c 'cp -ar ./!(node_modules|.serverless) /build && cd /build && npm install --only=prod && npm install -g serverless && cd authorizer && npm install --only=prod && cd .. && sls --aws-profile hackney deploy'
+    command: bash -O extglob -c 'cp -ar ./!(node_modules) /build && cd /build && npm install --only=prod && npm install -g serverless && cd authorizer && npm install --only=prod && cd .. && sls --aws-profile hackney deploy'

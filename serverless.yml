@@ -35,8 +35,10 @@ functions:
           method: ANY
           authorizer: ${self:custom.authorizer.w2-document-api-authorizer}
     environment:
+      S3_BUCKET_NAME: w2-documents
       W2_DB_URL: ${ssm:/uhw-document-api/production/W2_DB_URL}
       W2_IMAGE_SERVER_URL: ${ssm:/uhw-document-api/production/W2_IMAGE_SERVER_URL}
+      NODE_ENV: production
   w2-document-api-authorizer:
     name: w2-document-api-authorizer-${self:provider.stage}
     role: arn:aws:iam::775052747630:role/LBH_Lambda_Execution

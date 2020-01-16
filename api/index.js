@@ -3,6 +3,7 @@ require('dotenv').config();
 const serverless = require('serverless-http');
 const express = require('express');
 const path = require('path');
+const AWS = require('aws-sdk');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -23,8 +24,19 @@ const documentHandlers = require('@lib/documentHandlers')({
   imageServerGateway
 });
 
+let cacheGatewayOptions = {
+  s3: new AWS.S3()
+};
+
+if (process.env.NODE_ENV === 'development') {
+  const credentials = new AWS.SharedIniFileCredentials({
+    profile: process.env.AWS_PROFILE_NAME
+  });
+  cacheGatewayOptions.s3 = new AWS.S3({ credentials });
+}
+
 const useCaseOptions = {
-  cacheGateway: require('@lib/gateways/InMemoryCacheGateway')(),
+  cacheGateway: require('@lib/gateways/S3Gateway')(cacheGatewayOptions),
   dbGateway: require('@lib/gateways/W2Gateway')({
     dbConnection: new SqlServerConnection({
       dbUrl: process.env.W2_DB_URL

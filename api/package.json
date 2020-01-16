@@ -26,6 +26,9 @@
     "jest": "^24.9.0",
     "pdf2json": "^1.1.8"
   },
+  "devDependencies": {
+    "aws-sdk": "^2.604.0"
+  },
   "jest": {
     "testEnvironment": "node",
     "moduleNameMapper": {

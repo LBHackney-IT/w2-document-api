@@ -6,15 +6,14 @@ module.exports = function(options) {
 
   return async function(metadata) {
     // Download each of the pages
-    const docs = [];
+    const imageFetchers = [];
     for (const page of metadata.pages) {
-      const docFetcher = async () => {
+      imageFetchers.push(async () => {
         return await imageServerGateway.getDocument(page.imageId);
-      };
-      docs.push(docFetcher);
+      });
     }
     // Turn into pdf
-    const outputDoc = await imagesToPDF(docs);
+    const outputDoc = await imagesToPDF(imageFetchers);
     return { mimeType: MimeType.Pdf, doc: outputDoc };
   };
 };

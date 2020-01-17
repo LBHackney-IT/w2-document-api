@@ -22,7 +22,7 @@ jobs:
       - run:
           name: Install Serverless CLI and dependencies
           command: |
-            sudo npm i -g serverless && pushd api && npm install --only=prod && popd && pushd authorizer && npm install --only=prod && popd
+            sudo npm i -g serverless && pushd api && npm install && popd && pushd authorizer && npm install && popd
 
       - run:
           name: Set AWS credentials

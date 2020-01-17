@@ -14,7 +14,6 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "handlebars": "^4.6.0",
-    "image-type": "^4.1.0",
     "mime-types": "^2.1.26",
     "module-alias": "^2.2.2",
     "mssql": "^6.0.1",
@@ -22,12 +21,12 @@
     "pdfkit": "^0.11.0",
     "request-promise": "^4.2.5",
     "serverless-http": "^2.3.0",
-    "sharp": "^0.23.4",
-    "jest": "^24.9.0",
-    "pdf2json": "^1.1.8"
+    "sharp": "^0.23.4"
   },
   "devDependencies": {
-    "aws-sdk": "^2.604.0"
+    "aws-sdk": "^2.604.0",
+    "jest": "^24.9.0",
+    "pdf2json": "^1.1.8"
   },
   "jest": {
     "testEnvironment": "node",

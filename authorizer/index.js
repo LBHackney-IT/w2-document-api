@@ -18,7 +18,7 @@ const allow = resource => {
       ]
     }
   };
-}
+};
 
 function extractTokenFromAuthHeader(e) {
   if (!(e.headers && e.headers.Authorization)) return null;
@@ -55,6 +55,7 @@ function userInAllowedGroup(userGroups) {
 }
 
 exports.handler = (event, context, callback) => {
+  console.log(event);
   const token =
     extractTokenFromAuthHeader(event) ||
     extractTokenFromCookieHeader(event) ||

@@ -17,6 +17,10 @@ provider:
       - subnet-00356e0650138f74f
       - subnet-0a7f442c22a6feedc
 
+plugins:
+  - serverless-offline
+  - serverless-offline-ssm
+
 functions:
   w2-document-api:
     name: w2-document-api-${self:provider.stage}
@@ -50,22 +54,13 @@ functions:
         - authorizer/index.js
         - authorizer/node_modules/**
     environment:
-      RESOURCE: ${self:custom.apiResource}
       jwtsecret: ${ssm:/common/hackney-jwt-secret}
+      allowedGroups: "housingneeds-singleview-beta"
 
 custom:
   stage: production
   authorizer:
     w2-document-api-authorizer:
       name: w2-document-api-authorizer
-      type: REQUEST
-      identitySource: method.request.querystring.authToken
+      type: request
       resultTtlInSeconds: 0
-  apiResource:
-    Fn::Join:
-      - ''
-      - - 'arn:aws:execute-api:${self:provider.region}:'
-        - Ref: 'AWS::AccountId'
-        - ':'
-        - Ref: 'ApiGatewayRestApi'
-        - '/*/*/*'

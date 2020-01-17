@@ -5,7 +5,6 @@ const express = require('express');
 const path = require('path');
 const AWS = require('aws-sdk');
 const app = express();
-const port = process.env.PORT || 3000;
 
 const SqlServerConnection = require('@lib/SqlServerConnection');
 
@@ -100,8 +99,6 @@ app.get('/documents/:id/view', async (req, res) => {
     res.sendStatus(500);
   }
 });
-
-app.listen(port, () => console.log(`App listening on port ${port}!`));
 
 module.exports.handler = serverless(app, {
   binary: ['*/*']

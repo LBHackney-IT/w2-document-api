@@ -1,43 +1,68 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const cookie = require('cookie');
 const jwt_secret = process.env.jwtsecret;
+const allowedGroups = process.env.allowedGroups.split(',');
 
-const allow = {
-  principalId: 'user',
-  policyDocument: {
-    Version: '2012-10-17',
-    Statement: [
-      {
-        Action: 'execute-api:Invoke',
-        Effect: 'Allow',
-        Resource: process.env.RESOURCE
-      }
-    ]
+const allow = resource => {
+  return {
+    principalId: 'user',
+    policyDocument: {
+      Version: '2012-10-17',
+      Statement: [
+        {
+          Action: 'execute-api:Invoke',
+          Effect: 'Allow',
+          Resource: resource
+        }
+      ]
+    }
+  };
+}
+
+function extractTokenFromAuthHeader(e) {
+  if (!(e.headers && e.headers.Authorization)) return null;
+  if (e.headers.Authorization.startsWith('Bearer')) {
+    return e.headers.Authorization.replace('Bearer ', '');
   }
-};
+}
+
+function extractTokenFromCookieHeader(e) {
+  if (!(e.headers && e.headers.Cookie)) return null;
+  const cookies = cookie.parse(e.headers.Cookie);
+  return cookies['hackneyToken'];
+}
 
 function extractTokenFromUrl(e) {
-  if (!e.queryStringParameters && !e.queryStringParameters.authToken) return '';
+  if (!(e.queryStringParameters && e.queryStringParameters.authToken))
+    return null;
   return e.queryStringParameters.authToken;
 }
 
-function validateToken(token, callback) {
+function decodeToken(token) {
   try {
-    const payload = jwt.verify(token, jwt_secret);
-    // need to add groups
-    if (payload) {
-      console.log(JSON.stringify(allow));
-      callback(null, allow);
-    } else {
-      callback('Unauthorized');
-    }
+    return jwt.verify(token, jwt_secret);
   } catch (err) {
-    console.log(err);
-    callback('Unauthorized');
+    return false;
+  }
+}
+
+function userInAllowedGroup(userGroups) {
+  if (!(userGroups && userGroups.length !== undefined)) return false;
+  for (const group of userGroups) {
+    if (allowedGroups.indexOf(group) >= 0) return true;
   }
 }
 
 exports.handler = (event, context, callback) => {
-  const token = extractTokenFromUrl(event);
-  validateToken(token, callback);
+  const token =
+    extractTokenFromAuthHeader(event) ||
+    extractTokenFromCookieHeader(event) ||
+    extractTokenFromUrl(event);
+  const decodedToken = decodeToken(token);
+  if (token && decodedToken && userInAllowedGroup(decodedToken.groups)) {
+    callback(null, allow(event.methodArn));
+  } else {
+    callback('Unauthorized');
+  }
 };

@@ -55,7 +55,6 @@ function userInAllowedGroup(userGroups) {
 }
 
 exports.handler = (event, context, callback) => {
-  console.log(event);
   const token =
     extractTokenFromAuthHeader(event) ||
     extractTokenFromCookieHeader(event) ||

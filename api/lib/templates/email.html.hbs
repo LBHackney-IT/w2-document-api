@@ -1,11 +1,54 @@
 <html>
+  <head>
+    <style>
+      * {
+        font-family: sans-serif;
+        font-size: 100%;
+        box-sizing:border-box;
+      }
+      .label{
+        font-weight: bold;
+      }
+      pre{
+        width: 100%;
+        overflow: auto;
+        margin:20px 5px 5px;
+        border:1px solid #CCC;
+        padding: 10px;
+      }
+      table td{
+        vertical-align: top;
+        padding:5px;
+      }
+    </style>
+  </head>
   <body>
-    <p>
-      {{sender}}
-    </p>
-    <p>
-      {{recipient}}
-    </p>
+    <table>
+      <tr>
+        <td class="label">
+          Sender:
+        </td>
+        <td>
+          {{sender}}
+        </td>
+      </tr>
+      <tr>
+        <td class="label">
+          Recipient:
+        </td>
+        <td>
+          {{recipient}}
+        </td>
+      </tr>
+      <tr>
+        <td class="label">
+          Subject:
+        </td>
+        <td>
+          {{subject}}
+        </td>
+      </tr>
+    </table>
     <pre>
       {{content}}
     </pre>

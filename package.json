@@ -9,5 +9,9 @@
     "serverless": "^1.60.5",
     "serverless-offline": "^5.12.1",
     "serverless-offline-ssm": "^4.1.2"
+  },
+  "scripts": {
+    "start": "sls offline start --noAuth",
+    "debug": "export SLS_DEBUG=* && node --inspect /usr/local/bin/serverless offline -s dev --noAuth"
   }
 }

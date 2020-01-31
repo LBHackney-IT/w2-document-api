@@ -5,7 +5,8 @@ const sql = require('mssql');
 describe('SqlServerConnection', function() {
   it('configures the connection pool', async function() {
     const mockPool = {
-      on: jest.fn()
+      on: jest.fn(),
+      connect: jest.fn()
     };
     sql.ConnectionPool = jest.fn(() => mockPool);
 

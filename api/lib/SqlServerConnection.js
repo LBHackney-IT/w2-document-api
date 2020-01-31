@@ -14,15 +14,16 @@ class SqlServerConnection {
       requestTimeout: 60000
     });
 
+    this.poolConnect = this.pool.connect();
+
     this.pool.on('error', err => {
       console.log(err);
     });
   }
 
   async request(query, params) {
-    if (!this.pool.connected) {
-      await this.pool.connect();
-    }
+    await this.poolConnect;
+
     const request = this.pool.request();
     params.forEach(param => {
       request.input(param.id, sql[param.type], param.value);

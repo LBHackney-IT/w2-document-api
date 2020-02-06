@@ -4,7 +4,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: eu-west-2
-  stage: production
+  stage: ${opt:stage}
   profile: hackney
   timeout: 15
   apiGateway:
@@ -38,11 +38,62 @@ functions:
           path: '{proxy+}'
           method: ANY
           authorizer: ${self:custom.authorizer.w2-document-api-authorizer}
+          cors:
+            origins:
+              - '*'
     environment:
       S3_BUCKET_NAME: w2-documents
       W2_DB_URL: ${ssm:/uhw-document-api/production/W2_DB_URL}
       W2_IMAGE_SERVER_URL: ${ssm:/uhw-document-api/production/W2_IMAGE_SERVER_URL}
-      NODE_ENV: production
+
+  uhw-document-api:
+    name: uhw-document-api-${self:provider.stage}
+    role: arn:aws:iam::775052747630:role/LBH_Lambda_Execution
+    handler: api/index.handler
+    package:
+      exclude:
+        - '**'
+      include:
+        - api/index.js
+        - api/lib/**
+        - api/node_modules/**
+    events:
+      - http:
+          path: 'uhw/{proxy+}'
+          method: ANY
+          authorizer: ${self:custom.authorizer.w2-document-api-authorizer}
+          cors:
+            origins:
+              - '*'
+    environment:
+      S3_BUCKET_NAME: ${ssm:/uhw-document-api/production/S3_BUCKET_NAME}
+      W2_DB_URL: ${ssm:/uhw-document-api/production/W2_DB_URL}
+      W2_IMAGE_SERVER_URL: ${ssm:/uhw-document-api/production/W2_IMAGE_SERVER_URL}
+
+  hncomino-document-api:
+    name: hncomino-document-api-${self:provider.stage}
+    role: arn:aws:iam::775052747630:role/LBH_Lambda_Execution
+    handler: api/index.handler
+    package:
+      exclude:
+        - '**'
+      include:
+        - api/index.js
+        - api/lib/**
+        - api/node_modules/**
+    events:
+      - http:
+          path: 'hncomino/{proxy+}'
+          method: ANY
+          authorizer: ${self:custom.authorizer.w2-document-api-authorizer}
+          cors:
+            origins:
+              - '*'
+    environment:
+      S3_BUCKET_NAME: ${ssm:/hncomino-document-api/production/S3_BUCKET_NAME}
+      W2_DB_URL: ${ssm:/hncomino-document-api/production/W2_DB_URL}
+      W2_IMAGE_SERVER_URL: ${ssm:/hncomino-document-api/production/W2_IMAGE_SERVER_URL}
+
   w2-document-api-authorizer:
     name: w2-document-api-authorizer-${self:provider.stage}
     role: arn:aws:iam::775052747630:role/LBH_Lambda_Execution
@@ -55,10 +106,10 @@ functions:
         - authorizer/node_modules/**
     environment:
       jwtsecret: ${ssm:/common/hackney-jwt-secret}
-      allowedGroups: "housingneeds-singleview-beta"
+      allowedGroups: 'housingneeds-singleview-beta'
 
 custom:
-  stage: production
+  stage: ${self:provider.stage}
   authorizer:
     w2-document-api-authorizer:
       name: w2-document-api-authorizer

@@ -3,6 +3,7 @@ module.exports = function(options) {
 
   return {
     get: async function(id) {
+      if (process.env.DISABLE_CACHE) return;
       try {
         const response = await s3
           .getObject({
@@ -22,6 +23,7 @@ module.exports = function(options) {
       }
     },
     put: async function(id, document) {
+      if (process.env.DISABLE_CACHE) return;
       try {
         const response = await s3
           .putObject({

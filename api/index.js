@@ -23,19 +23,10 @@ const documentHandlers = require('@lib/documentHandlers')({
   imageServerGateway
 });
 
-let cacheGatewayOptions = {
-  s3: new AWS.S3()
-};
-
-if (process.env.NODE_ENV === 'development') {
-  const credentials = new AWS.SharedIniFileCredentials({
-    profile: process.env.AWS_PROFILE_NAME
-  });
-  cacheGatewayOptions.s3 = new AWS.S3({ credentials });
-}
-
 const useCaseOptions = {
-  cacheGateway: require('@lib/gateways/S3Gateway')(cacheGatewayOptions),
+  cacheGateway: require('@lib/gateways/S3Gateway')({
+    s3: new AWS.S3()
+  }),
   dbGateway: require('@lib/gateways/W2Gateway')({
     dbConnection: new SqlServerConnection({
       dbUrl: process.env.W2_DB_URL

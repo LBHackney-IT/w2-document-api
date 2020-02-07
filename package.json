@@ -13,5 +13,8 @@
   "scripts": {
     "start": "sls offline start --noAuth",
     "debug": "export SLS_DEBUG=* && node --inspect /usr/local/bin/serverless offline -s staging --noAuth"
+  },
+  "dependencies": {
+    "@sentry/node": "^5.12.2"
   }
 }

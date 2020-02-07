@@ -46,7 +46,7 @@ functions:
       W2_DB_URL: ${ssm:/uhw-document-api/production/W2_DB_URL}
       W2_IMAGE_SERVER_URL: ${ssm:/uhw-document-api/production/W2_IMAGE_SERVER_URL}
       ENV: ${self:provider.stage}
-      SENTRY_DSN:  ${ssm:/hn-single-view-api/SENTRY_DSN}
+      SENTRY_DSN:  ${ssm:/uhw-document-api/SENTRY_DSN}
 
   uhw-document-api:
     name: uhw-document-api-${self:provider.stage}

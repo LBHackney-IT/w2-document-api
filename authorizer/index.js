@@ -1,4 +1,19 @@
 require('dotenv').config();
+const Sentry = require('@sentry/node');
+
+if (process.env.ENV === 'staging' || process.env.ENV === 'production') {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    environment: process.env.ENV
+  });
+
+  // The request handler must be the first middleware on the app
+  app.use(Sentry.Handlers.requestHandler());
+
+  // The error handler must be before any other error middleware and after all controllers
+  app.use(Sentry.Handlers.errorHandler());
+}
+
 const jwt = require('jsonwebtoken');
 const cookie = require('cookie');
 const jwt_secret = process.env.jwtsecret;

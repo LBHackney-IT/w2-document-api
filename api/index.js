@@ -7,7 +7,7 @@ const AWS = require('aws-sdk');
 const app = express();
 const Sentry = require('@sentry/node');
 
-if (process.env.SENTRY_DSN) {
+if (process.env.ENV === 'staging' || process.env.ENV === 'production') {
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
     environment: process.env.ENV

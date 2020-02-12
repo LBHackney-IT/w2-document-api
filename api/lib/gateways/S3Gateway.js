@@ -3,7 +3,7 @@ module.exports = function(options) {
 
   return {
     get: async function(id) {
-      if (process.env.DISABLE_CACHE) return;
+      if (process.env.DISABLE_CACHE === 'true') return;
       try {
         const response = await s3
           .getObject({

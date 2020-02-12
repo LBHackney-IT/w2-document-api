@@ -46,7 +46,7 @@ functions:
       W2_DB_URL: ${ssm:/uhw-document-api/production/W2_DB_URL}
       W2_IMAGE_SERVER_URL: ${ssm:/uhw-document-api/production/W2_IMAGE_SERVER_URL}
       ENV: ${self:provider.stage}
-      SENTRY_DSN:  ${ssm:/uhw-document-api/SENTRY_DSN}
+      SENTRY_DSN: ${ssm:/uhw-document-api/SENTRY_DSN}
 
   uhw-document-api:
     name: uhw-document-api-${self:provider.stage}
@@ -72,7 +72,7 @@ functions:
       W2_DB_URL: ${ssm:/uhw-document-api/production/W2_DB_URL}
       W2_IMAGE_SERVER_URL: ${ssm:/uhw-document-api/production/W2_IMAGE_SERVER_URL}
       ENV: ${self:provider.stage}
-      SENTRY_DSN:  ${ssm:/uhw-document-api/SENTRY_DSN}
+      SENTRY_DSN: ${ssm:/uhw-document-api/SENTRY_DSN}
 
   hncomino-document-api:
     name: hncomino-document-api-${self:provider.stage}
@@ -98,7 +98,7 @@ functions:
       W2_DB_URL: ${ssm:/hncomino-document-api/production/W2_DB_URL}
       W2_IMAGE_SERVER_URL: ${ssm:/hncomino-document-api/production/W2_IMAGE_SERVER_URL}
       ENV: ${self:provider.stage}
-      SENTRY_DSN:  ${ssm:/uhw-document-api/SENTRY_DSN}
+      SENTRY_DSN: ${ssm:/hncomino-document-api/SENTRY_DSN}
 
   w2-document-api-authorizer:
     name: w2-document-api-authorizer-${self:provider.stage}
@@ -114,7 +114,7 @@ functions:
       jwtsecret: ${ssm:/common/hackney-jwt-secret}
       allowedGroups: 'housingneeds-singleview-beta'
       ENV: ${self:provider.stage}
-      SENTRY_DSN:  ${ssm:/uhw-document-api/SENTRY_DSN}
+      SENTRY_DSN: ${ssm:/uhw-document-api/SENTRY_DSN}
 
 custom:
   stage: ${self:provider.stage}

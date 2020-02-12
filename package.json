@@ -11,10 +11,8 @@
     "serverless-offline-ssm": "^4.1.2"
   },
   "scripts": {
-    "start": "sls offline start --noAuth",
-    "debug": "export SLS_DEBUG=* && node --inspect /usr/local/bin/serverless offline -s staging --noAuth"
-  },
-  "dependencies": {
-    "@sentry/node": "^5.12.2"
+    "start": "sls offline start -s dev --noAuth",
+    "debug": "export SLS_DEBUG=* && node --inspect /usr/local/bin/serverless offline -s dev --noAuth",
+    "auth": "serverless invoke local -s dev -f w2-document-api-authorizer -p authorizer/event.json"
   }
 }

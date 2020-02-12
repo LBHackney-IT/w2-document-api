@@ -1,5 +1,6 @@
 {
   "queryStringParameters": {
     "authToken": "xxxxx"
-  }
+  },
+  "methodArn": "arn:xxx"
 }

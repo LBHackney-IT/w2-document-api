@@ -5,9 +5,10 @@ const express = require('express');
 const path = require('path');
 const AWS = require('aws-sdk');
 const app = express();
-const Sentry = require('@sentry/node');
 
 if (process.env.ENV === 'staging' || process.env.ENV === 'production') {
+  const Sentry = require('@sentry/node');
+
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
     environment: process.env.ENV
@@ -57,6 +58,20 @@ const {
   getConvertedDocument,
   getOriginalDocument
 } = require('@lib/use-cases')(useCaseOptions);
+
+// DO I NEED CORS?
+// app.use(function(req, res, next) {
+//   res.setHeader('Access-Control-Allow-Origin', '*');
+//   res.setHeader('Access-Control-Allow-Credentials', true);
+//   next();
+// });
+
+app.use(function(req, res, next) {
+  // had to rewrite the path to get it playing nice with a not-root resource in api gateway
+  req.url = req.url.replace('/uhw', '');
+  req.url = req.url.replace('/hncomino', '');
+  next();
+});
 
 app.get('/attachments/:id/download', async (req, res) => {
   res.sendStatus(200);

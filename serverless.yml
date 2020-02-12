@@ -22,32 +22,6 @@ plugins:
   - serverless-offline-ssm
 
 functions:
-  w2-document-api:
-    name: w2-document-api-${self:provider.stage}
-    role: arn:aws:iam::775052747630:role/LBH_Lambda_Execution
-    handler: api/index.handler
-    package:
-      exclude:
-        - '**'
-      include:
-        - api/index.js
-        - api/lib/**
-        - api/node_modules/**
-    events:
-      - http:
-          path: '{proxy+}'
-          method: ANY
-          authorizer: ${self:custom.authorizer.w2-document-api-authorizer}
-          cors:
-            origins:
-              - '*'
-    environment:
-      S3_BUCKET_NAME: w2-documents
-      W2_DB_URL: ${ssm:/uhw-document-api/production/W2_DB_URL}
-      W2_IMAGE_SERVER_URL: ${ssm:/uhw-document-api/production/W2_IMAGE_SERVER_URL}
-      ENV: ${self:provider.stage}
-      SENTRY_DSN: ${ssm:/uhw-document-api/SENTRY_DSN}
-
   uhw-document-api:
     name: uhw-document-api-${self:provider.stage}
     role: arn:aws:iam::775052747630:role/LBH_Lambda_Execution

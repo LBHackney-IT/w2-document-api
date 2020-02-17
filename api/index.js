@@ -68,8 +68,7 @@ const {
 
 app.use(function(req, res, next) {
   // had to rewrite the path to get it playing nice with a not-root resource in api gateway
-  req.url = req.url.replace('/uhw', '');
-  req.url = req.url.replace('/hncomino', '');
+  req.url = req.url.replace(`/${process.env.URL_PREFIX}`, '');
   next();
 });
 
@@ -112,7 +111,12 @@ app.get('/documents/:id/view', async (req, res) => {
       res.set('Content-Type', converted.mimeType);
       res.send(converted.doc);
     } else {
-      res.send(downloadTemplate({ id: req.params.id }));
+      res.send(
+        downloadTemplate({
+          id: req.params.id,
+          system: process.env.URL_PREFIX
+        })
+      );
     }
   } catch (err) {
     console.log(err);

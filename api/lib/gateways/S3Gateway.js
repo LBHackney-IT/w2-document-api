@@ -13,9 +13,17 @@ module.exports = function(options) {
           .promise();
         if (response) {
           console.log(`Got doc id=${id} from s3`);
+          const document = response;
+          if (document.ContentLength > 6000000) {
+            document.url = s3.getSignedUrl('getObject', {
+              Bucket: process.env.S3_BUCKET_NAME,
+              Key: `${id}`
+            });
+          }
           return {
-            doc: response.Body,
-            mimeType: response.Metadata.mimetype
+            doc: document.Body,
+            url: document.url,
+            mimeType: document.Metadata.mimetype
           };
         }
       } catch (err) {

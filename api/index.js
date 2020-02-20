@@ -104,10 +104,14 @@ app.get('/documents/:id/download', async (req, res) => {
 });
 
 app.get('/documents/:id/view', async (req, res) => {
+  // const doc_url = getS3Url(req.params.id);
+  // if (doc_url) return (doc_url);
   try {
     const metadata = await getDocumentMetadata(req.params.id);
     const converted = await getConvertedDocument(metadata);
+    // const doc_url = getS3Url(req.params.id);
     if (converted) {
+      if (converted.url) return res.redirect(converted.url);
       res.set('Content-Type', converted.mimeType);
       res.send(converted.doc);
     } else {

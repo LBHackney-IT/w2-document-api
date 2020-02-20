@@ -4,7 +4,9 @@ module.exports = function(options) {
 
   return async function(metadata) {
     let document = await cacheGateway.get(metadata.id);
-
+    console.log('-----DOC FROM CACHE-----');
+    console.log(document);
+    console.log('-----DOC FROM CACHE-----');
     if (!document) {
       document = await documentHandlers[metadata.type](metadata);
 

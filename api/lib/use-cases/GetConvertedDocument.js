@@ -3,10 +3,10 @@ module.exports = function(options) {
   const documentHandlers = options.documentHandlers;
 
   return async function(metadata) {
-    const document = await cacheGateway.get(metadata.id);
+    let document = await cacheGateway.get(metadata.id);
 
     if (!document) {
-      const document = await documentHandlers[metadata.type](metadata);
+      document = await documentHandlers[metadata.type](metadata);
 
       await cacheGateway.put(metadata.id, document);
     }

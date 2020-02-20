@@ -1,10 +1,11 @@
 const GetConvertedDocument = require('@lib/use-cases/GetConvertedDocument');
+const fs = require('fs');
 
 const createTestItems = (id, docType) => {
   return {
     doc: {
       id,
-      doc: 'doc',
+      doc: fs.readFileSync('test/test-data/largeDocument'),
       mimeType: 'application/mt'
     },
     metadata: { id, type: docType }
@@ -28,12 +29,25 @@ describe('GetConvertedDocument', function() {
   let cacheGateway;
   let cacheGetSpy;
   let cachePutSpy;
+  let cacheGetUrlspy;
 
   beforeEach(() => {
     jest.resetModules();
-    cacheGateway = require('@lib/gateways/InMemoryCacheGateway')();
+    cacheGateway = require('@lib/gateways/S3Gateway')({
+      s3: {
+        getObject: jest.fn(async () => {
+          return promise: (() => {
+
+          })
+        }),
+        putObject: jest.fn(),
+        getSignedUrl: jest.fn()
+      }
+    });
     cacheGetSpy = jest.spyOn(cacheGateway, 'get');
     cachePutSpy = jest.spyOn(cacheGateway, 'put');
+    cacheGetUrlspy = jest.fn();
+    cacheGetUrlspy = jest.spyOn(cacheGateway, 'getUrl');
     documentHandlers = dummyDocumentHandlers(docType, doc);
   });
 

@@ -9,7 +9,11 @@ const createTestItems = (id, docType, docString) => {
       doc: docString ? docString : 'doc string',
       mimeType: 'application/mt'
     },
-    metadata: { id, type: docType }
+    metadata: {
+      id,
+      type: docType,
+      url: 'www.aws-signed-document-url.com/read/' + id
+    }
   };
 };
 
@@ -39,7 +43,7 @@ describe('GetConvertedDocument', function() {
       s3: {
         getObject: jest.fn(() => {
           if (documentNotCached == true) {
-            const notFoundError = new Error;
+            const notFoundError = new Error();
             notFoundError.code = 'NoSuchKey';
             throw notFoundError;
           }
@@ -61,13 +65,14 @@ describe('GetConvertedDocument', function() {
             }
           };
         }),
-        getSignedUrl: jest.fn()
+        getSignedUrl: jest.fn(() => {
+          return metadata.url;
+        })
       }
     });
 
     cacheGetSpy = jest.spyOn(cacheGateway, 'get');
     cachePutSpy = jest.spyOn(cacheGateway, 'put');
-    cacheGetUrlspy = jest.fn();
     cacheGetUrlspy = jest.spyOn(cacheGateway, 'getUrl');
     documentHandlers = dummyDocumentHandlers(docType, doc);
   });
@@ -109,5 +114,35 @@ describe('GetConvertedDocument', function() {
     expect(JSON.stringify(returnedDocument)).toBe(JSON.stringify(doc));
   });
 
-  "fs.readFileSync('test/test-data/largeDocument')"
+  it('gets large document from cache if it exists and returns doc url', async function() {
+    documentNotCached = false;
+    doc.doc = fs.readFileSync('test/test-data/largeDocument');
+
+    const usecase = GetConvertedDocument({
+      cacheGateway,
+      documentHandlers
+    });
+
+    const returnedDocument = await usecase(metadata);
+
+    expect(cacheGetSpy).toHaveBeenCalledWith(metadata.id);
+    expect(documentHandlers[docType]).not.toHaveBeenCalled();
+    expect(cacheGetUrlspy).toHaveBeenCalledWith(metadata.id);
+    expect(returnedDocument.url).toBe(metadata.url);
+  });
+
+  it('puts document in cache if it doesnt exist and returns doc url', async function() {
+    documentNotCached = true;
+    doc.doc = fs.readFileSync('test/test-data/largeDocument');
+
+    const usecase = GetConvertedDocument({ cacheGateway, documentHandlers });
+
+    const returnedDocument = await usecase(metadata);
+
+    expect(cacheGetSpy).toHaveBeenCalledWith(metadata.id);
+    expect(documentHandlers[docType]).toHaveBeenCalled();
+    expect(cachePutSpy).toHaveBeenCalledWith(metadata.id, doc);
+    expect(cacheGetUrlspy).toHaveBeenCalledWith(metadata.id);
+    expect(returnedDocument.url).toBe(metadata.url);
+  });
 });

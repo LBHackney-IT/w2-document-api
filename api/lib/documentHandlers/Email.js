@@ -12,9 +12,10 @@ module.exports = function(options) {
       ...metadata.emailMetadata,
       content
     };
-    data.attachments.forEach(a => {
-      a.system = process.env.URL_PREFIX;
-    });
+    if (data.attachments)
+      data.attachments.forEach(a => {
+        a.system = process.env.URL_PREFIX;
+      });
     const doc = emailTemplate(data);
     return { mimeType: MimeType.Html, doc };
   };

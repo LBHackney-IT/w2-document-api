@@ -22,6 +22,19 @@ module.exports = function(options) {
         if (err.code !== 'NoSuchKey') console.log(err);
       }
     },
+    getUrl: async function(id) {
+      try {
+        const response = await s3.getSignedUrl('getObject', {
+          Bucket: process.env.S3_BUCKET_NAME,
+          Key: `${id}`
+        });
+        if (response) {
+          return response;
+        }
+      } catch (err) {
+        if (err.code !== 'NoSuchKey') console.log(err);
+      }
+    },
     put: async function(id, document) {
       if (process.env.DISABLE_CACHE) return;
       try {

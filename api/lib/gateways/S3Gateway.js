@@ -12,6 +12,7 @@ module.exports = function(options) {
           })
           .promise();
         if (response) {
+          console.log(`Got doc id=${id} from s3`);
           return {
             doc: response.Body,
             mimeType: response.Metadata.mimetype

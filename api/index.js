@@ -56,7 +56,8 @@ const useCaseOptions = {
 const {
   getDocumentMetadata,
   getConvertedDocument,
-  getOriginalDocument
+  getOriginalDocument,
+  getAttachment
 } = require('@lib/use-cases')(useCaseOptions);
 
 // DO I NEED CORS?
@@ -72,8 +73,9 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.get('/attachments/:id/download', async (req, res) => {
-  res.sendStatus(200);
+app.get('/attachments/:imageId/download', async (req, res) => {
+  const converted = await getAttachment(req.params.imageId);
+  res.send(converted.doc);
 });
 
 app.get('/attachments/:id/view', async (req, res) => {

@@ -13,7 +13,7 @@ describe('EmailHandler', function() {
     const metadata = {
       emailMetadata: {
         imageId: 1,
-        attachments: {}
+        attachments: [{}]
       }
     };
 
@@ -24,7 +24,7 @@ describe('EmailHandler', function() {
     );
     expect(emailTemplate).toHaveBeenCalledWith({
       imageId: 1,
-      attachments: {},
+      attachments: [{}],
       content: {}
     });
     expect(result.mimeType).toBe(MimeType.Html);

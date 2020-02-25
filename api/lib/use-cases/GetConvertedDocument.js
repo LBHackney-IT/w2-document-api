@@ -10,7 +10,7 @@ module.exports = function(options) {
       await cacheGateway.put(metadata.id, document);
     }
 
-    if (document.doc.length > 6000000) {
+    if (document && document.doc.length > 6000000) {
       document.url = await cacheGateway.getUrl(metadata.id);
     }
     return document;

@@ -110,7 +110,8 @@ app.get('/documents/:id/view', async (req, res) => {
     const metadata = await getDocumentMetadata(req.params.id);
     const converted = await getConvertedDocument(metadata);
     if (converted) {
-      if (converted.url) return res.redirect(converted.url);
+      if (converted.url)
+        return res.send(downloadTemplate({ url: converted.url }));
       res.set('Content-Type', converted.mimeType);
       res.send(converted.doc);
     } else {

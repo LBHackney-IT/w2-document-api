@@ -1,8 +1,15 @@
 <html>
 
 <body>
-  <p>This document is not able to display in your browser. <a href="/{{system}}/documents/{{id}}/download">Download it
-      here</a></p>
+  <p>
+      This document is not able to display in your browser.
+      {{#if url}}
+        <a href="{{url}}">
+      {{else}}
+        <a href="/{{system}}/documents/{{id}}/download">
+      {{/if}}
+      Download it here</a>
+  </p>
 </body>
 
 </html>

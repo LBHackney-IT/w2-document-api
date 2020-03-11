@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint --fix --ext js api/lib && echo 'Lint complete.'",
     "start": "node api/index.js",
     "test": "jest",
     "test-coverage": "jest --coverage"
@@ -11,6 +10,7 @@
   "dependencies": {
     "@freiraum/msgreader": "github:bjpirt/msgreader",
     "@iarna/rtf-to-html": "^1.1.0",
+    "@sentry/node": "^5.12.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "handlebars": "^4.6.0",
@@ -21,8 +21,7 @@
     "pdfkit": "^0.11.0",
     "request-promise": "^4.2.5",
     "serverless-http": "^2.3.0",
-    "sharp": "^0.23.4",
-    "@sentry/node": "^5.12.2"
+    "sharp": "^0.23.4"
   },
   "devDependencies": {
     "aws-sdk": "^2.604.0",

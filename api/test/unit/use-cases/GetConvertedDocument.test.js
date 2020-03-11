@@ -127,7 +127,11 @@ describe('GetConvertedDocument', function() {
 
     expect(cacheGetSpy).toHaveBeenCalledWith(metadata.id);
     expect(documentHandlers[docType]).not.toHaveBeenCalled();
-    expect(cacheGetUrlspy).toHaveBeenCalledWith(metadata.id);
+    expect(cacheGetUrlspy).toHaveBeenCalledWith(
+      metadata.id,
+      returnedDocument.mimeType,
+      expect.anything()
+    );
     expect(returnedDocument.url).toBe(metadata.url);
   });
 
@@ -142,7 +146,11 @@ describe('GetConvertedDocument', function() {
     expect(cacheGetSpy).toHaveBeenCalledWith(metadata.id);
     expect(documentHandlers[docType]).toHaveBeenCalled();
     expect(cachePutSpy).toHaveBeenCalledWith(metadata.id, doc);
-    expect(cacheGetUrlspy).toHaveBeenCalledWith(metadata.id);
+    expect(cacheGetUrlspy).toHaveBeenCalledWith(
+      metadata.id,
+      returnedDocument.mimeType,
+      expect.anything()
+    );
     expect(returnedDocument.url).toBe(metadata.url);
   });
 });

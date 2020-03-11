@@ -16,7 +16,7 @@ module.exports = function(options) {
       document.url = await cacheGateway.getUrl(
         metadata.id,
         document.mimeType,
-        W2DocExtensionLookup[metadata.type] || metadata.extension
+        W2DocExtensionLookup[metadata.type] || metadata.extension || ''
       );
     }
     return document;

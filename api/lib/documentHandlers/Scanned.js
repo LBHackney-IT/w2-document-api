@@ -5,15 +5,20 @@ module.exports = function(options) {
   const imageServerGateway = options.imageServerGateway;
 
   return async function(metadata) {
-    // Download each of the pages
-    const imageFetchers = [];
-    for (const page of metadata.pages) {
-      imageFetchers.push(async () => {
-        return await imageServerGateway.getDocument(page.imageId);
-      });
+    if (metadata.pages.length === 0) {
+      // not actually a scan
+      const buffer = await imageServerGateway.getDocument(metadata.imageId);
+      return {
+        mimeType: MimeType.PlainText,
+        doc: buffer.toString('utf-8')
+      };
     }
+
+    const imageFetchers = metadata.pages.map(page => async () => {
+      return imageServerGateway.getDocument(page.imageId);
+    });
+
     // Turn into pdf
-    const outputDoc = await imagesToPDF(imageFetchers);
-    return { mimeType: MimeType.Pdf, doc: outputDoc };
+    return { mimeType: MimeType.Pdf, doc: await imagesToPDF(imageFetchers) };
   };
 };

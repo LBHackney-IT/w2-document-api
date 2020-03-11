@@ -6,13 +6,14 @@
     "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-prettier": "^3.1.2",
     "prettier": "^1.18.2",
-    "serverless": "^1.60.5",
+    "serverless": "^1.66.0",
     "serverless-offline": "^5.12.1",
     "serverless-offline-ssm": "^4.1.2"
   },
   "scripts": {
-    "start": "sls offline start -s dev --noAuth --port 3002",
-    "debug": "export SLS_DEBUG=* && node --inspect ./node_modules/serverless/bin/serverless offline -s dev --noAuth --port 3002",
-    "auth": "serverless invoke local -s dev -f w2-document-api-authorizer -p authorizer/event.json"
+    "start": "AWS_PROFILE=hackney sls offline start -s dev --noAuth --noTimeout --port 3002",
+    "debug": "export SLS_DEBUG=* && AWS_PROFILE=hackney node --inspect ./node_modules/serverless/bin/serverless offline -s dev --noAuth --noTimeout --port 3002",
+    "auth": "serverless invoke local -s dev -f w2-document-api-authorizer -p authorizer/event.json",
+    "lint": "eslint --fix --ext js api/lib && echo 'Lint complete.'"
   }
 }

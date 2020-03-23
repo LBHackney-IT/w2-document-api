@@ -78,8 +78,17 @@ app.get('/attachments/:imageId/download', async (req, res) => {
   res.send(converted.doc);
 });
 
-app.get('/attachments/:id/view', async (req, res) => {
-  res.sendStatus(200);
+app.get('/attachments/:imageId/view', async (req, res) => {
+  try {
+    const attachment = await getAttachment(req.params.imageId);
+    if (attachment) {
+      res.type(attachment.mimeType);
+      res.end(attachment.doc, 'binary');
+    }
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
 });
 
 app.get('/documents/:id', async (req, res) => {

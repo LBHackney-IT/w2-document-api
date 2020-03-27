@@ -1,10 +1,13 @@
 const GetAttachment = require('@lib/use-cases/GetAttachment');
 
 describe('GetAttachment', function() {
-  const createDbGateway = imageId => {
+  const createDbGateway = (imageId, sendResponse) => {
     return {
       getEmailAttachmentMetadata: jest.fn(() => {
-        return [{ id: 278400, imageId: imageId, name: 'Scanned.pdf' }];
+        if (sendResponse) {
+          return [{ id: 278400, imageId: imageId, name: 'Scanned.pdf' }];
+        }
+        return [];
       })
     };
   };
@@ -19,7 +22,7 @@ describe('GetAttachment', function() {
 
   it('gets the attachment metadata and document', async function() {
     const imageId = 1234;
-    const dbGateway = createDbGateway(imageId);
+    const dbGateway = createDbGateway(imageId, true);
     const document = 'some document';
     const imageServerGateway = createImageServerGateway(document);
     const usecase = GetAttachment({ imageServerGateway, dbGateway });
@@ -32,5 +35,23 @@ describe('GetAttachment', function() {
     expect(attachment.doc).toBe(document);
     expect(attachment.filename).toBe('Scanned.pdf');
     expect(attachment.mimeType).toBe('application/pdf');
+  });
+
+
+  it('gets the just gets document when there is no metadata', async function() {
+    const imageId = 1234;
+    const dbGateway = createDbGateway(imageId, false);
+    const document = 'some document';
+    const imageServerGateway = createImageServerGateway(document);
+    const usecase = GetAttachment({ imageServerGateway, dbGateway });
+
+    const attachment = await usecase(imageId);
+
+    expect(dbGateway.getEmailAttachmentMetadata).toHaveBeenCalledTimes(1);
+    expect(imageServerGateway.getDocument).toHaveBeenCalledTimes(1);
+
+    expect(attachment.doc).toBe(document);
+    expect(attachment.filename).toBe('');
+    expect(attachment.mimeType).toBe('');
   });
 });

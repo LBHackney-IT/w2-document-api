@@ -7,11 +7,15 @@ module.exports = function(options) {
   return async function(imageId) {
     const outputDoc = await imageServerGateway.getDocument(imageId);
     const metadata = await dbGateway.getEmailAttachmentMetadata(imageId);
-    const name = metadata[0].name;
-    const mimeType = mimeTypes.lookup(name);
+    let filename = '';
+    let mimeType = '';
+    if (metadata.length > 0) {
+      filename = metadata[0].name;
+      mimeType = mimeTypes.lookup(filename);
+    }
     return {
       doc: outputDoc,
-      filename: name,
+      filename: filename,
       mimeType: mimeType
     };
   };

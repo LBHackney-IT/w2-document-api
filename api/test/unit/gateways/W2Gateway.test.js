@@ -6,6 +6,7 @@ const {
   getDocumentMetadataSQL,
   getDocumentPagesSQL,
   getEmailAttachmentsSQL,
+  getEmailAttachmentMetadataSQL,
   getEmailMetadataSQL
 } = loadSQL(path.join(__dirname, '../../../lib/sql'));
 
@@ -76,6 +77,18 @@ describe('W2Gateway', function() {
     const response = await gateway.getEmailAttachments(id);
 
     expectSuccess(dbConnection.request, response, getEmailAttachmentsSQL);
+  });
+
+  it('can get email attachment metadata', async function() {
+    const dbConnection = dbConn(true, false);
+    const gateway = W2Gateway({ dbConnection });
+    const response = await gateway.getEmailAttachmentMetadata(id);
+
+    expectSuccess(
+      dbConnection.request,
+      response,
+      getEmailAttachmentMetadataSQL
+    );
   });
 
   it('returns undefined if cant fetch email attachments', async function() {

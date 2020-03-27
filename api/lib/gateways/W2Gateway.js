@@ -5,6 +5,7 @@ const {
   getDocumentMetadataSQL,
   getDocumentPagesSQL,
   getEmailAttachmentsSQL,
+  getEmailAttachmentMetadataSQL,
   getEmailMetadataSQL
 } = loadSQL(path.join(__dirname, '../sql'));
 
@@ -26,6 +27,12 @@ module.exports = function({ dbConnection }) {
 
     getEmailAttachments: async function(id) {
       return await dbConnection.request(getEmailAttachmentsSQL, [
+        { id: 'id', type: 'Int', value: id }
+      ]);
+    },
+
+    getEmailAttachmentMetadata: async function(id) {
+      return await dbConnection.request(getEmailAttachmentMetadataSQL, [
         { id: 'id', type: 'Int', value: id }
       ]);
     },

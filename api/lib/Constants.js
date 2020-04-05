@@ -1,3 +1,8 @@
+const DocSystems = {
+  uhw: 'UHW',
+  hncomino: 'COMINO'
+};
+
 const W2DocType = {
   C: 'PhoneCall',
   P: 'InPerson',
@@ -29,4 +34,4 @@ const MimeType = {
   PlainText: 'text/plain'
 };
 
-module.exports = { MimeType, W2DocType, W2DocExtensionLookup };
+module.exports = { DocSystems, MimeType, W2DocType, W2DocExtensionLookup };

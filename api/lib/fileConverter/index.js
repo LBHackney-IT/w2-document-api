@@ -7,8 +7,7 @@ const passthrough = extension => {
 };
 
 const converters = {
-  // rtf: require('./Rtf'), todo: rtf to html is never going to work, solution needs investigation.
-  rtf: passthrough('rtf'),
+  rtf: require('./Rtf'),
   xml: require('./Xml'),
   msg: require('./Msg'),
   pdf: passthrough('pdf'),

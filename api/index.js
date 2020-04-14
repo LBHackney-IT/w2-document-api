@@ -54,6 +54,7 @@ const useCaseOptions = {
 };
 
 const {
+  getCustomerDocuments,
   getDocumentMetadata,
   getConvertedDocument,
   getOriginalDocument,
@@ -85,6 +86,17 @@ app.get('/attachments/:imageId/view', async (req, res) => {
       res.type(attachment.mimeType);
       res.end(attachment.doc, 'binary');
     }
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+});
+
+app.get('/customers/:id/documents', async (req, res) => {
+  try {
+    const system = process.env.URL_PREFIX;
+    const documents = await getCustomerDocuments(req.params.id, system);
+    res.send(documents);
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
@@ -137,6 +149,9 @@ app.get('/documents/:id/view', async (req, res) => {
   }
 });
 
-module.exports.handler = serverless(app, {
-  binary: ['*/*']
-});
+module.exports = {
+  handler: serverless(app, {
+    binary: ['*/*']
+  }),
+  app
+};

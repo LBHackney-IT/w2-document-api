@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node api/index.js",
     "test": "jest",
+    "test-ci": "node test/wait-for-test-containers.js && npm run test-coverage",
     "test-coverage": "jest --coverage"
   },
   "dependencies": {
@@ -16,12 +17,13 @@
     "handlebars": "^4.6.0",
     "mime-types": "^2.1.26",
     "module-alias": "^2.2.2",
-    "mssql": "^6.0.1",
+    "mssql": "^6.2.0",
     "node-cache": "^5.1.0",
     "pdfkit": "^0.11.0",
     "request-promise": "^4.2.5",
     "serverless-http": "^2.3.0",
-    "sharp": "^0.23.4"
+    "sharp": "^0.23.4",
+    "supertest": "^4.0.2"
   },
   "devDependencies": {
     "aws-sdk": "^2.604.0",

@@ -33,13 +33,32 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package-lock.json" }}-{{ checksum "combined-package-lock.txt" }}
 
-      - run:
-          name: Run tests with coverage
-          command: pushd api && npm run test-coverage && popd
-
       - persist_to_workspace:
           root: ~/repo
           paths: .
+
+  test:
+    machine: # Docker is available in CircleCI's machine executor
+      image: ubuntu-1604:201903-01
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm install v12.13 && nvm alias default v12.13
+            npm i && pushd api && npm install && popd && pushd authorizer && npm install && popd
+      - run:
+          name: Run tests with coverage
+          command: |
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm install v12.13 && nvm alias default v12.13
+            sudo docker build -t uh_test_db .
+            sudo docker run -dt -p 1433:1433 --name uh_test_db uh_test_db
+            pushd api && npm run test-ci && popd
 
   deploy-staging:
     executor: my-executor
@@ -88,9 +107,12 @@ workflows:
   continuous-delivery:
     jobs:
       - build
-      - deploy-staging:
+      - test:
           requires:
             - build
+      - deploy-staging:
+          requires:
+            - test
           filters:
             branches:
               only:

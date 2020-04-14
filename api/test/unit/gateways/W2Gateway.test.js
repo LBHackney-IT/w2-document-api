@@ -3,6 +3,7 @@ const { loadSQL } = require('@lib/Utils');
 const W2Gateway = require('@lib/gateways/W2Gateway');
 
 const {
+  getCustomerDocumentsSQL,
   getDocumentMetadataSQL,
   getDocumentPagesSQL,
   getEmailAttachmentsSQL,
@@ -11,25 +12,25 @@ const {
 } = loadSQL(path.join(__dirname, '../../../lib/sql'));
 
 describe('W2Gateway', function() {
+  const system = 'uhw';
   const id = 123;
+  const sqlParams = [{ id: 'id', type: 'Int', value: id }];
   const dbConn = (isSuccess, returnsArray) => {
     return {
       request: jest.fn(() => {
         if (returnsArray) {
-          return isSuccess ? [{ id }] : [];
+          return isSuccess ? [{ DocNo: id }] : [];
         }
         if (isSuccess) {
-          return { id };
+          return { DocNo: id };
         }
       })
     };
   };
 
   const expectSuccess = (req, res, sql) => {
-    expect(req).toHaveBeenCalledWith(sql, [
-      { id: 'id', type: 'Int', value: id }
-    ]);
-    expect(res.id).toBe(id);
+    expect(req).toHaveBeenCalledWith(sql, sqlParams);
+    expect(res.DocNo).toBe(id);
   };
 
   const expectFailure = (req, res, sql) => {
@@ -38,6 +39,18 @@ describe('W2Gateway', function() {
     ]);
     expect(res).toBeUndefined();
   };
+
+  it('can get customer documents', async function() {
+    const dbConnection = dbConn(true, true);
+    const gateway = W2Gateway({ dbConnection });
+    const response = await gateway.getCustomerDocuments(id, system);
+
+    expect(dbConnection.request).toHaveBeenCalledWith(
+      getCustomerDocumentsSQL,
+      sqlParams
+    );
+    expect(response[0].id).toBe(id);
+  });
 
   it('can get document metadata', async function() {
     const dbConnection = dbConn(true, true);

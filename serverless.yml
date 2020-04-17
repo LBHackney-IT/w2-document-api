@@ -43,6 +43,7 @@ functions:
               - '*'
     environment:
       URL_PREFIX: 'uhw'
+      RTF_TO_HTML_URL: ${ssm:/uhw-document-api/production/RTF_TO_HTML_URL}
       S3_BUCKET_NAME: ${ssm:/uhw-document-api/production/S3_BUCKET_NAME}
       W2_DB_URL: ${ssm:/uhw-document-api/production/W2_DB_URL}
       W2_IMAGE_SERVER_URL: ${ssm:/uhw-document-api/production/W2_IMAGE_SERVER_URL}
@@ -70,6 +71,7 @@ functions:
               - '*'
     environment:
       URL_PREFIX: 'hncomino'
+      RTF_TO_HTML_URL: ${ssm:/hncomino-document-api/production/RTF_TO_HTML_URL}
       S3_BUCKET_NAME: ${ssm:/hncomino-document-api/production/S3_BUCKET_NAME}
       W2_DB_URL: ${ssm:/hncomino-document-api/production/W2_DB_URL}
       W2_IMAGE_SERVER_URL: ${ssm:/hncomino-document-api/production/W2_IMAGE_SERVER_URL}

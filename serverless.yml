@@ -100,4 +100,5 @@ custom:
     w2-document-api-authorizer:
       name: w2-document-api-authorizer
       type: request
+      identitySource: ''
       resultTtlInSeconds: 0

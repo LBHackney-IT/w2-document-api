@@ -12,7 +12,6 @@
     "@freiraum/msgreader": "github:bjpirt/msgreader",
     "@iarna/rtf-to-html": "^1.1.0",
     "@sentry/node": "^5.12.2",
-    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "handlebars": "^4.6.0",
     "mime-types": "^2.1.26",

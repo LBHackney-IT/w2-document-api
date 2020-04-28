@@ -1,4 +1,3 @@
-require('dotenv').config();
 const Sentry = require('@sentry/node');
 const jwt = require('jsonwebtoken');
 const cookie = require('cookie');

@@ -92,13 +92,13 @@ functions:
   w2-document-api-authorizer:
     name: w2-document-api-authorizer-${self:provider.stage}
     role: arn:aws:iam::775052747630:role/LBH_Lambda_Execution
-    handler: authorizer/index.handler
+    handler: authorizer.handler
     package:
       exclude:
         - '**'
       include:
-        - authorizer/index.js
-        - authorizer/node_modules/**
+        - ./authorizer.js
+        - ./node_modules/**
     environment:
       jwtsecret: ${ssm:/common/hackney-jwt-secret}
       allowedGroups: 'housingneeds-singleview-beta'

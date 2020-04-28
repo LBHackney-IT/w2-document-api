@@ -11,7 +11,7 @@
 The W2 Documents API consits of 3 node projects:
 
 - The `/API` that handles the connection to W2 server and converts documents.
-- `/authorizer`
+- `authorizer.js` that relies on the [node-lambda-authorizer](https://github.com/LBHackney-IT/node-lambda-authorizer).
 - The root project handles deployment using [serverless](https://serverless.com/).
 
 W2 Documents API provides a way to view and/or download documents from Hackney systems.

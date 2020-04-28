@@ -3,7 +3,7 @@ version: 2.1
 executors:
   my-executor:
     docker:
-      - image: circleci/node:12.13
+      - image: circleci/node:12.16
 
     working_directory: ~/repo
 
@@ -16,7 +16,7 @@ jobs:
 
       - run:
           name: Concatenate all package-lock.json files into single file for checksum
-          command: cat package.json api/package.json authorizer/package.json > combined-package-lock.txt
+          command: cat package-lock.json api/package-lock.json > combined-package-lock.txt
 
       - restore_cache:
           keys:
@@ -26,7 +26,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            sudo npm i && pushd api && npm install && popd && pushd authorizer && npm install && popd
+            sudo npm i && pushd api && npm install && popd
 
       - save_cache:
           paths:
@@ -49,7 +49,7 @@ jobs:
             export NVM_DIR="/opt/circleci/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             nvm install v12.13 && nvm alias default v12.13
-            npm i && pushd api && npm install && popd && pushd authorizer && npm install && popd
+            npm i && pushd api && npm install && popd
       - run:
           name: Run tests with coverage
           command: |

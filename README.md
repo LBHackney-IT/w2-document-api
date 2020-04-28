@@ -17,8 +17,6 @@ The W2 Documents API consits of 3 node projects:
 W2 Documents API provides a way to view and/or download documents from Hackney systems.
 It currently fetches UHW and COMINO documents from W2 Image Server.
 
-Images get cached in S3?
-
 Currently supports msg, pdf, xml, rtf?? formats.
 
 ## Installation

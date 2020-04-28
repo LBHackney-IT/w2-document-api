@@ -138,6 +138,9 @@ workflows:
             branches:
               only:
                 - master
+      - deploy-test:
+          requires:
+            - deploy-staging
       - permit-deploy-production:
           type: approval
           requires:

@@ -16,10 +16,23 @@ provider:
     subnetIds:
       - subnet-00356e0650138f74f
       - subnet-0a7f442c22a6feedc
+  environment:
+    ENV: ${self:provider.stage}
 
 plugins:
   - serverless-offline
   - serverless-offline-ssm
+
+resources:
+  Resources:
+    hncominoCacheBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: "${self:service}-${self:provider.stage}-hncomino-document-cache"
+    uhwCacheBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: "${self:service}-${self:provider.stage}-uhw-document-cache"
 
 functions:
   uhw-document-api:
@@ -43,11 +56,10 @@ functions:
               - '*'
     environment:
       URL_PREFIX: 'uhw'
-      RTF_TO_HTML_URL: ${ssm:/uhw-document-api/production/RTF_TO_HTML_URL}
-      S3_BUCKET_NAME: ${ssm:/uhw-document-api/production/S3_BUCKET_NAME}
-      W2_DB_URL: ${ssm:/uhw-document-api/production/W2_DB_URL}
-      W2_IMAGE_SERVER_URL: ${ssm:/uhw-document-api/production/W2_IMAGE_SERVER_URL}
-      ENV: ${self:provider.stage}
+      RTF_TO_HTML_URL: ${ssm:/uhw-document-api/${self:provider.stage}/RTF_TO_HTML_URL}
+      S3_BUCKET_NAME: "${self:service}-${self:provider.stage}-uhw-document-cache"
+      W2_DB_URL: ${ssm:/uhw-document-api/${self:provider.stage}/W2_DB_URL}
+      W2_IMAGE_SERVER_URL: ${ssm:/uhw-document-api/${self:provider.stage}/W2_IMAGE_SERVER_URL}
       SENTRY_DSN: ${ssm:/uhw-document-api/SENTRY_DSN}
 
   hncomino-document-api:
@@ -71,11 +83,10 @@ functions:
               - '*'
     environment:
       URL_PREFIX: 'hncomino'
-      RTF_TO_HTML_URL: ${ssm:/hncomino-document-api/production/RTF_TO_HTML_URL}
-      S3_BUCKET_NAME: ${ssm:/hncomino-document-api/production/S3_BUCKET_NAME}
-      W2_DB_URL: ${ssm:/hncomino-document-api/production/W2_DB_URL}
-      W2_IMAGE_SERVER_URL: ${ssm:/hncomino-document-api/production/W2_IMAGE_SERVER_URL}
-      ENV: ${self:provider.stage}
+      RTF_TO_HTML_URL: ${ssm:/hncomino-document-api/${self:provider.stage}/RTF_TO_HTML_URL}
+      S3_BUCKET_NAME: "${self:service}-${self:provider.stage}-hncomino-document-cache"
+      W2_DB_URL: ${ssm:/hncomino-document-api/${self:provider.stage}/W2_DB_URL}
+      W2_IMAGE_SERVER_URL: ${ssm:/hncomino-document-api/${self:provider.stage}/W2_IMAGE_SERVER_URL}
       SENTRY_DSN: ${ssm:/hncomino-document-api/SENTRY_DSN}
 
   w2-document-api-authorizer:
@@ -91,7 +102,6 @@ functions:
     environment:
       jwtsecret: ${ssm:/common/hackney-jwt-secret}
       allowedGroups: 'housingneeds-singleview-beta'
-      ENV: ${self:provider.stage}
       SENTRY_DSN: ${ssm:/uhw-document-api/SENTRY_DSN}
 
 custom:

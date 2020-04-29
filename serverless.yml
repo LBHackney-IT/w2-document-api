@@ -23,16 +23,21 @@ plugins:
   - serverless-offline
   - serverless-offline-ssm
 
+package:
+  individually: true
+  exclude:
+    - ./**
+
 resources:
   Resources:
     hncominoCacheBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: "${self:service}-${self:provider.stage}-hncomino-document-cache"
+        BucketName: '${self:service}-${self:provider.stage}-hncomino-document-cache'
     uhwCacheBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: "${self:service}-${self:provider.stage}-uhw-document-cache"
+        BucketName: '${self:service}-${self:provider.stage}-uhw-document-cache'
 
 functions:
   uhw-document-api:
@@ -40,12 +45,11 @@ functions:
     role: arn:aws:iam::775052747630:role/LBH_Lambda_Execution
     handler: api/index.handler
     package:
-      exclude:
-        - '**'
       include:
         - api/index.js
         - api/lib/**
         - api/node_modules/**
+        - api/package.json
     events:
       - http:
           path: 'uhw/{proxy+}'
@@ -57,7 +61,7 @@ functions:
     environment:
       URL_PREFIX: 'uhw'
       RTF_TO_HTML_URL: ${ssm:/uhw-document-api/${self:provider.stage}/RTF_TO_HTML_URL}
-      S3_BUCKET_NAME: "${self:service}-${self:provider.stage}-uhw-document-cache"
+      S3_BUCKET_NAME: '${self:service}-${self:provider.stage}-uhw-document-cache'
       W2_DB_URL: ${ssm:/uhw-document-api/${self:provider.stage}/W2_DB_URL}
       W2_IMAGE_SERVER_URL: ${ssm:/uhw-document-api/${self:provider.stage}/W2_IMAGE_SERVER_URL}
       SENTRY_DSN: ${ssm:/uhw-document-api/SENTRY_DSN}
@@ -67,12 +71,11 @@ functions:
     role: arn:aws:iam::775052747630:role/LBH_Lambda_Execution
     handler: api/index.handler
     package:
-      exclude:
-        - '**'
       include:
         - api/index.js
         - api/lib/**
         - api/node_modules/**
+        - api/package.json
     events:
       - http:
           path: 'hncomino/{proxy+}'
@@ -84,7 +87,7 @@ functions:
     environment:
       URL_PREFIX: 'hncomino'
       RTF_TO_HTML_URL: ${ssm:/hncomino-document-api/${self:provider.stage}/RTF_TO_HTML_URL}
-      S3_BUCKET_NAME: "${self:service}-${self:provider.stage}-hncomino-document-cache"
+      S3_BUCKET_NAME: '${self:service}-${self:provider.stage}-hncomino-document-cache'
       W2_DB_URL: ${ssm:/hncomino-document-api/${self:provider.stage}/W2_DB_URL}
       W2_IMAGE_SERVER_URL: ${ssm:/hncomino-document-api/${self:provider.stage}/W2_IMAGE_SERVER_URL}
       SENTRY_DSN: ${ssm:/hncomino-document-api/SENTRY_DSN}
@@ -94,8 +97,6 @@ functions:
     role: arn:aws:iam::775052747630:role/LBH_Lambda_Execution
     handler: authorizer.handler
     package:
-      exclude:
-        - '**'
       include:
         - ./authorizer.js
         - ./node_modules/**

@@ -79,7 +79,7 @@ $ make test
 - Method: `GET`
 - id=`[string]`
 
-## Debug the API (VS Code)
+## Configuration for debugging the API (VS Code)
 
 Create a new file at .vscode/launch.json and add the following:
 
@@ -95,20 +95,6 @@ Create a new file at .vscode/launch.json and add the following:
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "debug"],
       "port": 9229
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Jest",
-      "cwd": "${workspaceFolder}",
-      "program": "${workspaceFolder}/api/node_modules/.bin/jest",
-      "args": ["--runInBand"],
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "disableOptimisticBPs": true,
-      "windows": {
-        "program": "${workspaceFolder}/node_modules/jest/bin/jest"
-      }
     }
   ]
 }

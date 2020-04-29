@@ -17,5 +17,7 @@
     "auth": "serverless invoke local -s dev -f w2-document-api-authorizer -p authorizer/event.json",
     "lint": "eslint --fix --ext js api/lib && echo 'Lint complete.'"
   },
-  "dependencies": {}
+  "dependencies": {
+    "node-lambda-authorizer": "LBHackney-IT/node-lambda-authorizer.git#master"
+  }
 }

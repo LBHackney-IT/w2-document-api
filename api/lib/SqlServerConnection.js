@@ -1,37 +1,28 @@
 const sql = require('mssql');
 const url = require('url');
 
-class SqlServerConnection {
-  constructor(config) {
-    const dbUrl = url.parse(config.dbUrl);
-    const [user, pass] = dbUrl.auth.split(':');
+module.exports = options => {
+  const dbUrl = url.parse(options.dbUrl);
+  const [user, pass] = dbUrl.auth.split(':');
+  const config = {
+    user: user,
+    password: pass,
+    server: dbUrl.host,
+    database: dbUrl.path.replace('/', ''),
+    requestTimeout: 60000
+  };
 
-    this.pool = new sql.ConnectionPool({
-      user: user,
-      password: pass,
-      server: dbUrl.host,
-      database: dbUrl.path.replace('/', ''),
-      requestTimeout: 60000
-    });
-
-    this.poolConnect = this.pool.connect();
-
-    this.pool.on('error', err => {
-      console.log(err);
-    });
-  }
-
-  async request(query, params) {
-    try {
-      await this.poolConnect;
-
-      const request = this.pool.request();
-
-      params.forEach(param => {
-        request.input(param.id, sql[param.type], param.value);
-      });
-
+  return {
+    request: async (query, params) => {
+      const pool = await new sql.ConnectionPool(config).connect();
+      const request = new sql.Request(pool);
+      if (params) {
+        params.forEach(param => {
+          request.input(param.id, sql[param.type], param.value);
+        });
+      }
       const result = await request.query(query);
+      await sql.close();
 
       // trim whitespace from varchar column values
       result.recordset.forEach(record => {
@@ -43,10 +34,6 @@ class SqlServerConnection {
       });
 
       return result.recordset;
-    } catch (err) {
-      console.log(err);
     }
-  }
-}
-
-module.exports = SqlServerConnection;
+  };
+};

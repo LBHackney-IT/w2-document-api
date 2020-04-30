@@ -1,6 +1,5 @@
 const path = require('path');
 const AWS = require('aws-sdk');
-const SqlServerConnection = require('@lib/SqlServerConnection');
 
 const { loadTemplates } = require('@lib/Utils');
 const templates = loadTemplates(path.join(__dirname, 'templates'));
@@ -14,7 +13,7 @@ const useCaseOptions = {
     s3: new AWS.S3()
   }),
   dbGateway: require('@lib/gateways/W2Gateway')({
-    dbConnection: new SqlServerConnection({
+    dbConnection: require('@lib/SqlServerConnection')({
       dbUrl: process.env.W2_DB_URL
     })
   }),

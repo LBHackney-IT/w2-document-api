@@ -10,9 +10,11 @@ describe('SqlServerConnection', function() {
     };
     sql.ConnectionPool = jest.fn(() => mockPool);
 
-    new SqlServerConnection({
+    const db = SqlServerConnection({
       dbUrl: 'mssql://user:pass@host/db'
     });
+
+    db.request('hello', {});
 
     expect(sql.ConnectionPool).toHaveBeenCalledTimes(1);
     expect(sql.ConnectionPool).toHaveBeenCalledWith({

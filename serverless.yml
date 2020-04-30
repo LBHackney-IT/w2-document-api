@@ -6,7 +6,7 @@ provider:
   region: eu-west-2
   stage: ${opt:stage}
   profile: hackney
-  timeout: 15
+  timeout: 30
   apiGateway:
     binaryMediaTypes:
       - '*/*'
@@ -44,6 +44,7 @@ functions:
     name: uhw-document-api-${self:provider.stage}
     role: arn:aws:iam::775052747630:role/LBH_Lambda_Execution
     handler: api/index.handler
+    timeout: 60
     package:
       include:
         - api/index.js

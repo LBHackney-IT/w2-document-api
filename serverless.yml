@@ -99,8 +99,8 @@ functions:
     handler: authorizer.handler
     package:
       include:
-        - ./authorizer.js
-        - ./node_modules/**
+        - authorizer.js
+        - node_modules/**
     environment:
       jwtsecret: ${ssm:/common/hackney-jwt-secret}
       allowedGroups: 'housingneeds-singleview-beta'

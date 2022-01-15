@@ -9,7 +9,7 @@
     "serverless": "^1.66.0",
     "serverless-offline": "^5.12.1",
     "serverless-offline-ssm": "^4.1.2",
-    "shelljs": "^0.8.3"
+    "shelljs": "^0.8.5"
   },
   "scripts": {
     "start": "AWS_PROFILE=hackney sls offline start -s dev --noAuth --noTimeout --port 3002",
